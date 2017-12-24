@@ -1,0 +1,13 @@
+A few hints before you start you work:
+
+1)server and client code are completely separated, so if you are intented to work on either of
+them you dont need to mess with the other one, e.g if you are working on the client side, you can download
+server code to test your client server related functionality, but you should not make any changes to server code.
+
+2)view generations and client side interations are all handled by vue engine, no ssr(server side rendering) is
+considered in this project and you only have to deal with server to exchange pure data.
+
+3)according to the aforementioned point, all routing are handled using vue which means routing are handled on the client side
+and regarding this issue I have included examples and code samples on the client code so you can find out how the thigns are working down there.
+
+more hints will be added here as project goes on!

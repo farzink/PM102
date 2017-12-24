@@ -1,0 +1,45 @@
+Product APIs
+{
+    Add product:
+    {
+        Post /products
+            Model: {
+                name: String, Not Null = true
+                price: DOUBLE,
+                description: String,
+                condition: String, Not Null = true
+                available: Boolean,
+                categoryId:  String, Not Null = true (This Id should come from Category table)
+            }
+            Expected Result:
+            {
+                Add Product to Database
+            }
+    }
+    Edit Product:
+    {
+        PUT /products/:id
+        Expexted Result {
+            edit the product that related to Id.
+        }
+    }
+    Delete Product:
+    {
+        Delete /products/:id
+        Expected Result {
+            delete the product from database
+        }
+    }
+    Get Product:
+    {
+        Get /products/:id
+        Expexted Result {
+            Get one Product with Id that given in Params
+        }
+        Get /products
+        Expexted Result {
+            Get all Products 
+        }
+        
+    }
+}

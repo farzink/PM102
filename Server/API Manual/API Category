@@ -1,0 +1,38 @@
+Categoru APIs
+{
+    POST /categories
+    {
+        Model {
+            name: String, = Not Null = ture
+            description: String, = Not Null = ture
+        }
+        Expected Result{
+            Save new category to Database
+        }
+    }
+    Get /categories/:id
+    {
+        Expected Result{
+            find one category by id from database
+        }
+    }
+    Get /categories
+    {
+        Expected Result{
+            Find all categories
+        }
+    }
+    PUT /categories/:id
+    {
+        Expected Result{
+            Edit Category 
+        }
+    }
+    Delete /categories/:id
+    {
+        Expected Result{
+            Delete the Category
+        }
+    }
+
+}
