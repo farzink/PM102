@@ -10,7 +10,7 @@
       <div class="container">
         <div class="row">
           <div class="col-xl-9 mx-auto">
-            <h1 class="mb-5">Suche the shit nearest moglich</h1>
+            <h1 class="mb-5">Find the nearest items to you</h1>
           </div>
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
             <form>
@@ -19,7 +19,7 @@
                   <input type="email" class="form-control form-control-lg" placeholder="Enter your item name here...">
                 </div>
                 <div class="col-12 col-md-3">
-                  <button type="submit" class="btn btn-block btn-lg btn-primary">Zearch</button>
+                  <button type="submit" class="btn btn-block btn-lg btn-primary">Search</button>
                 </div>
               </div>
             </form>

@@ -27,7 +27,7 @@ Vue.use(VueAxios, axios)
 Vue.use(Vuelidate)
 Vue.use(Toasted, {
     position: "bottom-center",
-    duration: 2000,
+    duration: 4000,
     fullWidth: true,
     fitToScreen: true,
     theme: "primary"

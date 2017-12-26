@@ -1,7 +1,7 @@
 import { error } from "util"
 
 module.exports = app => {
-    const repo = app.repositories.sql.ProductRepository;    
+    const repo = app.repositories.sql.ProductRepository;
     const validator = app.models.viewmodels.product.ProductValidationViewModel;
 
     app.route("/products/:id")
@@ -39,9 +39,8 @@ module.exports = app => {
         })
 
     app.route("/products")
-        .all(app.xticate.authenticate())        
+        .all(app.xticate.authenticate())
         .get((req, res) => {
-            console.log(req.user);
             let model = req.params;
             console.log(model);
             repo.findAll(model, (products) => {
@@ -49,18 +48,16 @@ module.exports = app => {
             })
         })
         .post(validator.validate(),
-        (req, res) => {
-            const errors = validator.response(req, res);
-            if (errors.result) {
-                errors.response();
-            } else {
-                var model = req.body;
-                repo.add(model, (result) => {
-                    res.status(201).json({ product: result });
-                });
-            }
-        });
+            (req, res) => {
+                const errors = validator.response(req, res);
+                if (errors.result) {
+                    errors.response();
+                } else {
+                    var model = req.body;
+                    repo.add(model, (result) => {
+                        res.status(201).json({ result: result });
+                    });
+                }
+            });
 
 }
-
-

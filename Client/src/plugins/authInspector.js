@@ -1,13 +1,22 @@
 const auth = {
     isSignedIn: () => {
         const token = localStorage.getItem('authToken');
-        console.log(token);
+        if (token != null)
+            return true
+        else
+            return false;
     },
     createToken: (token) => {
         localStorage.setItem("authToken", token);
     },
     isTokenExpired: () => {
         const token = localStorage.getItem('authToken');
+    },
+    removeToken: () => {
+        localStorage.removeItem("authToken");
+    },
+    AH: () => {
+        return { Authorization: "Bearer " + localStorage.getItem("authToken") }
     }
 }
 
@@ -15,5 +24,5 @@ const auth = {
 
 
 module.exports.install = (Vue) => {
-    Vue.prototype.$authInspector = auth;
+    Vue.prototype.$auth = auth;
 };

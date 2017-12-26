@@ -6,11 +6,13 @@ import Tasks from '@/components/Tasks'
 import Storage from '@/components/Storage'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import AddProduct from '@/components/Product/Add'
+import Products from '@/components/Products'
 
 Vue.use(Router)
 
 
-export default new Router({
+let router = new Router({
     routes: [{
             path: '/',
             name: 'Home',
@@ -40,6 +42,38 @@ export default new Router({
             path: '/register',
             name: 'Register',
             component: Register
+        },
+        {
+            path: '/manage/products',
+            name: 'Products',
+            component: Products,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/manage/products/add',
+            name: 'AddProduct',
+            component: AddProduct,
+            meta: {
+                requiresAuth: true
+            }
         }
     ]
 });
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!Vue.prototype.$auth.isSignedIn()) {
+            next({
+                path: '/login',
+                query: { redirect: to.fullPath }
+            })
+        } else {
+            next()
+        }
+    } else {
+        next()
+    }
+});
+
+export default router;
