@@ -54,8 +54,11 @@
   
   
   
-  
-  
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <vue-dropzone  ref="myV ueDropzone" id="dropzone" :options="dropzoneOptions"/>  
+  </div>
+  </div>
   
   <div class="form-group row">
     <div class="col-sm-12 offset-md-9 col-md-3">
@@ -66,8 +69,12 @@
     <!-- <div class="col-sm-12 col-md-6">
       <router-link class="nav-link" :to="'/register'">need an account?</router-link>      
     </div> -->  
+    
   <router-link class="btn btn-danger btn-round fa fa-close" style="position:absolute; top:10px; right: 10px; color: white" :to="'/manage/products'"></router-link>      
 </form>
+
+
+
 
 
 
@@ -79,9 +86,14 @@
 </template>
 
 <script>
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.css'
 import { required, minLength, maxLength, between, email } from 'vuelidate/lib/validators'
 export default {
   name: 'Add',
+  components: {
+    vueDropzone: vue2Dropzone
+  },
   data () {
     return {        
         name: '',
@@ -89,8 +101,14 @@ export default {
         category: '',
         description: '',
         isNew: true,
-        isUsed: false
-    }
+        isUsed: false,
+        dropzoneOptions: {
+          url: 'https://kosekhar.com',
+          thumbnailWidth: 150,
+          maxFilesize: 0.5,
+          headers: { "My-Awesome-Header": "header value" }
+      }
+    }    
   },
   validations :{
     

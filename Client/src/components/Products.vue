@@ -15,6 +15,16 @@
   <div class="card-body">
     <h4 class="card-title">Manage</h4>
     <h6 class="card-subtitle mb-4 text-muted ">you can add/edit your product(s)</h6>
+
+      <div class="row">
+    <div class="col-sm-12 col-md-3">      
+      <router-link class="btn btn-secondary text-white" :to="'/manage/products/add'">Add new product</router-link>            
+    </div>         
+    <div class="col-sm-12 col-md-3">      
+      <router-link class="btn btn-secondary text-white" :to="'/manage/products/edit'">Edit existing product</router-link>                  
+    </div>         
+  </div>
+
 </div>
 		</div>
     </div>
@@ -25,6 +35,17 @@
   <div class="card-body">
     <h4 class="card-title">Statistics</h4>
     <h6 class="card-subtitle mb-4 text-muted ">you can review your product(s) statistics</h6>
+
+
+<div class="row">
+    <div class="col-sm-12 col-md-3">      
+      <button class="btn btn-secondary"  @click="login">Review</button>
+    </div>         
+    
+  </div>
+
+
+
 </div>
 		</div>
     </div>

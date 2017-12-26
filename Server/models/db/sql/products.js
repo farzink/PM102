@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         price: {
             type: DataTypes.DOUBLE,
-            allowNull:  true,
+            allowNull: true,
             validate: {
                 notEmpty: false
             }
@@ -40,13 +40,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: true
+        },
+        nov: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
         }
     }, {
         classMethods: {
             associate: (models) => {
                 available: true;
                 Products.belongsTo(models.Users);
-                Products.belongsTo(models.Categories, { foreignKey: 'categoryId', targetKey: 'id'});
+                Products.belongsTo(models.Categories, { foreignKey: 'categoryId', targetKey: 'id' });
             }
         }
     });

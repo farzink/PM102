@@ -10,6 +10,7 @@
 
     <!-- <img src="./assets/logo.png"> -->
     <router-view/>
+    
   </div>
 </template>
 
@@ -17,12 +18,26 @@
 import CustomHeader from '@/components/CustomHeader'
 import Sidebar from '@/components/Sidebar'
 import Navigationbar from '@/components/Navigationbar'
+// import vue2Dropzone from 'vue2-dropzone'
+// import 'vue2-dropzone/dist/vue2Dropzone.css'
+
 export default {
   name: 'app',
   components: {
     CustomHeader,
     Sidebar,
     Navigationbar
+    
+  },
+  data() {
+    return {
+      dropzoneOptions: {
+          url: 'https://httpbin.org/post',
+          thumbnailWidth: 150,
+          maxFilesize: 0.5,
+          headers: { "My-Awesome-Header": "header value" }
+      }
+    }
   }
 }
 </script>
