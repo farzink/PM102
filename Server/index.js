@@ -9,10 +9,13 @@ consign()
     .then("models/db/config.js")
     .then("libs/configuration.js")
     .then("models/db/mongo")
-    .then("models/viewmodels")
     .then("repositories")
+    .then("repositories/sql/")
+    .then("models/viewmodels")
     .then("libs/authentication.js")
     .then("libs/middlewares.js")
-    .then("controllers")
-    .then("libs/boot.js")
+
+.then("controllers")
+
+.then("libs/boot.js")
     .into(app);

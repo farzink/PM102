@@ -5,7 +5,7 @@ module.exports = app => {
             Products.findAll({})
                 .then(products => result(products))
                 .catch(error => {
-                    
+
                 });
         },
         add: (model, result) => {
@@ -16,16 +16,16 @@ module.exports = app => {
         },
         deleteById: (model, result) => {
             Products.destroy({
-                where: {
-                    id: model.id
-                }
-            })
+                    where: {
+                        id: model.id
+                    }
+                })
                 .then(product => {
                     return result(model.id)
                 })
         },
         putById: (model, params, result) => {
-            let values = { 
+            let values = {
                 name: model.name,
                 description: model.description,
                 price: model.price,
@@ -34,8 +34,8 @@ module.exports = app => {
                 isAktive: model.visible
             }
             let selector = {
-                where:{id: params.id} 
-                }
+                where: { id: params.id }
+            }
 
             Products.update(values, selector)
                 .then(product => {
@@ -44,8 +44,8 @@ module.exports = app => {
         },
         getById: (model, result) => {
             Products.findOne({
-                where: { id: model.id}
-            }).then(product => { 
+                where: { id: model.id }
+            }).then(product => {
                 return result(product)
             })
 

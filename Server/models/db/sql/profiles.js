@@ -9,7 +9,7 @@ module.exports = (sequelize, DataType) => {
         },
         name: {
             type: DataType.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: true
             }
@@ -30,8 +30,8 @@ module.exports = (sequelize, DataType) => {
             }
         },
         role: {
-            type: DataType.STRING,            
-            allowNull: false,            
+            type: DataType.STRING,
+            allowNull: false,
         },
     }, {
         hooks: {

@@ -1,10 +1,15 @@
 import jwt from "jwt-simple";
 import bcrypt from "bcrypt";
+import { validator } from 'express-validator';
+const { check, validationResult } = require('express-validator/check');
 
 module.exports = app => {
     const cfg = app.libs.configuration;
-    const Profiles = app.libs.db.init.models.Profiles;
-    app.post("/token", (req, res) => {
+
+    //const Profiles = app.libs.db.init.models.Profiles;
+    const repo = app.repositories.sql.ProfileRepository;
+    const validator = app.models.viewmodels.authentication.RegisterValidationViewModel;
+    app.post("/authentication/token", (req, res) => {
         if (req.body.email && req.body.password) {
             const email = req.body.email;
             const password = req.body.password;
@@ -29,5 +34,23 @@ module.exports = app => {
         } else {
             res.sendStatus(401);
         }
+    });
+    app.post("/authentication/register", validator.validate(), (req, res) => {
+        const errors = validator.response(req, res);
+        var model = req.body;
+
+        repo.profileExistsByEmail(model, (result) => {
+            console.log(result)
+            if (result === true)
+                res.status(500).json({ "message": "please choose another email address" });
+            else {
+                repo.add(model, result => {
+                    res.status(201).json({
+                        id: result.id,
+                        email: result.email
+                    });
+                })
+            }
+        });
     });
 };
