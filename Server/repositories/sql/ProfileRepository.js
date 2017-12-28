@@ -28,9 +28,19 @@ module.exports = app => {
         },
         findById: (model, result) => {
             Profiles.findOne({
-                where: { id: model.id }
+                where: { id: model }
             }).then(profile => {
-                return result(profile)
+                return result({
+                    firstname: profile.firstname != null ? profile.firstname : "",
+                    lastname: profile.lastname != null ? profile.lastname : "",
+                    email: profile.email != null ? profile.email : "",
+                    street: profile.street != null ? profile.street : "",
+                    houseno: profile.houseno != null ? profile.houseno : "",
+                    state: profile.state != null ? profile.state : "",
+                    city: profile.city != null ? profile.city : "",
+                    postalcode: profile.postalcode != null ? profile.postalcode : "",
+                    phone: profile.phone != null ? profile.phone : ""
+                })
             })
 
         }

@@ -7,7 +7,9 @@ import Storage from '@/components/Storage'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import AddProduct from '@/components/Product/Add'
+import IndexProduct from '@/components/Product/Index'
 import Products from '@/components/Products'
+import Profile from '@/components/Profile'
 
 Vue.use(Router)
 
@@ -55,6 +57,22 @@ let router = new Router({
             path: '/manage/products/add',
             name: 'AddProduct',
             component: AddProduct,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/manage/products/index',
+            name: 'IndexProduct',
+            component: IndexProduct,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/profile',
+            name: 'Profile',
+            component: Profile,
             meta: {
                 requiresAuth: true
             }

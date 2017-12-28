@@ -10,8 +10,25 @@ module.exports = app => {
         },
         add: (model, result) => {
             Products.create(model)
-                .then(Product => {
-                    return result(Product);
+                .then(product => {
+                    return result(product);
+                });
+        },
+        findAllByProfileId: (model, result) => {
+            Products.findAll({
+                    where: {
+                        Id: model
+                    }
+                })
+                .then(products => result(products))
+                .catch(error => {
+
+                });
+        },
+        add: (model, result) => {
+            Products.create(model)
+                .then(product => {
+                    return result(product);
                 });
         },
         deleteById: (model, result) => {

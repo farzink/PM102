@@ -9,10 +9,10 @@ module.exports = app => {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
     };
     const strategy = new Strategy(params, (load, authorized) => {
+
         Profiles.findById(load.id)
             .then(profile => {
                 if (profile) {
-                    console.log(profile.id);
                     return authorized(null, {
                         id: profile.id,
                         email: profile.email,
@@ -30,8 +30,9 @@ module.exports = app => {
             return passport.initialize();
         },
         authenticate: () => {
+
             var authentication = passport.authenticate("jwt", cfg.jwtSession);
-            console.log(authentication);
+            console.log(authentication)
             return authentication;
         }
     };

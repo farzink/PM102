@@ -21,7 +21,7 @@
       <router-link class="btn btn-secondary text-white" :to="'/manage/products/add'">Add new product</router-link>            
     </div>         
     <div class="col-sm-12 col-md-3">      
-      <router-link class="btn btn-secondary text-white" :to="'/manage/products/edit'">Edit existing product</router-link>                  
+      <router-link class="btn btn-secondary text-white" :to="'/manage/products/index'">Edit existing product</router-link>                  
     </div>         
   </div>
 
@@ -70,25 +70,8 @@ export default {
   name: 'Products',
   data () {
     return {        
-        name: '',
-        condition: '',
-        category: '',
-        description: '',
-        isNew: true,
-        isUsed: false
+        
     }
-  },
-  validations :{
-    
-    name: {
-      required,
-      maxLength: maxLength(40)
-    },
-    description: {
-      required,
-      maxLength: maxLength(500)
-    },
-
   },
   methods: {
     test: function(){

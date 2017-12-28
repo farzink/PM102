@@ -17,6 +17,17 @@
       <span class="text-danger" v-if="!$v.name.maxLength">name can not be longer than 40 characters</span>
           </div>    
   </div>
+
+
+  <div class="form-group row">
+    <label for="inputEmail3" class="col-sm-3 col-form-label">Price</label>
+    <div class="col-sm-8">
+      <input class="form-control" id="inputEmail3" placeholder="Name" v-model="price" @input="$v.price.$touch()">      
+      <span class="text-danger" v-if="!$v.price.required && $v.price.$dirty">price is required</span>      
+      <span class="text-danger" v-if="!$v.price.between">price should be between 0 and 99999999</span>     
+          </div>    
+  </div>
+
   <div class="form-group row">
     <label for="inputPassword3" class="col-sm-3 col-form-label">Condition</label>
     <div class="col-sm-8">
@@ -63,7 +74,7 @@
   <div class="form-group row">
     <div class="col-sm-12 offset-md-9 col-md-3">
       <!-- <button class="btn btn-primary" style="width: 10rem" v-if="!$v.$invalid" @click="login">Sign up</button> -->
-      <button class="btn btn-primary" style="width: 8rem"  @click="login">Add</button>
+      <button class="btn btn-primary"  style="width: 8rem"  @click="add" v-bind:class="{disabled: $v.$invalid}">Add</button>
     </div>         
   </div>
     <!-- <div class="col-sm-12 col-md-6">
@@ -100,13 +111,17 @@ export default {
         condition: '',
         category: '',
         description: '',
+        price: 0,
         isNew: true,
         isUsed: false,
         dropzoneOptions: {
-          url: 'https://kosekhar.com',
+          url: 'http://localhost:2000/resources/upload',
           thumbnailWidth: 150,
           maxFilesize: 0.5,
-          headers: { "My-Awesome-Header": "header value" }
+          headers: this.$auth.AH(),
+          maxFiles: 5,
+          dictDefaultMessage: "drop your item`s images here",
+          addRemoveLinks: true
       }
     }    
   },
@@ -120,7 +135,10 @@ export default {
       required,
       maxLength: maxLength(500)
     },
-
+    price: {
+      required,
+      between: between(0, 99999999)
+    }
   },
   methods: {
     test: function(){
@@ -135,30 +153,44 @@ export default {
         this.isUsed = true;
       }
     },
-    login: function() {     
-      if(!this.$v.$invalid){
-        let gooz=this;        
-          this.axios.post(this.$gc.getBaseUrl("authentication/token"), {
-            email: gooz.email,
-            password: gooz.password
+    add: function() {     
+      let that = this;
+      if(!this.$v.invalid){
+        this.axios.defaults.headers.common['Authorization'] = this.$auth.FAH();
+        this.axios.post(this.$gc.getBaseUrl("products"), {
+            name: this.name,
+            price: this.price,
+            condition: this.isNew,
+            categoryId: 1,
+            description: this.description
           })
           .then(function(data){
             
-            if(data.data.isSuccessfull == true) {                          
-              gooz.$auth.createToken(data.data.token);
-              gooz.$toasted.show('successful login');              
-              gooz.$router.push("/");
+            if(data.status == 201) {                          
+              
+              that.$toasted.show('product successfully created.');              
+              that.$router.push("/manage/products");
             }
             else{              
-              gooz.$toasted.show('wrong credential, please try again!');              
+              that.$toasted.show('please try again!');              
             }            
           })
           .catch(function(error, data){              
-              gooz.$toasted.show('plase try again later');              
+              that.$toasted.show('plase try again later');              
             
           })
       }
     }
+  },
+  mounted: function() {    
+    let gooz=this;        
+          this.axios.get(this.$gc.getBaseUrl("resources/clear"), { headers: this.$auth.AH() })
+          .then(function(data){
+          
+          })
+          .catch(function(error, data){                         
+            
+          })
   }
 }
 </script>

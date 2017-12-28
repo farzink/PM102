@@ -7,12 +7,13 @@ module.exports = (sequelize, DataType) => {
             primaryKey: true,
             autoIncrement: true
         },
-        name: {
+        firstname: {
+            type: DataType.STRING,
+            allowNull: true
+        },
+        lastname: {
             type: DataType.STRING,
             allowNull: true,
-            validate: {
-                notEmpty: true
-            }
         },
         password: {
             type: DataType.STRING,
@@ -28,6 +29,30 @@ module.exports = (sequelize, DataType) => {
             validate: {
                 notEmpty: true
             }
+        },
+        street: {
+            type: DataType.STRING,
+            allowNull: true
+        },
+        houseno: {
+            type: DataType.STRING,
+            allowNull: true,
+        },
+        state: {
+            type: DataType.STRING,
+            allowNull: true,
+        },
+        city: {
+            type: DataType.STRING,
+            allowNull: true,
+        },
+        postalcode: {
+            type: DataType.STRING,
+            allowNull: true,
+        },
+        phone: {
+            type: DataType.STRING,
+            allowNull: true,
         },
         role: {
             type: DataType.STRING,

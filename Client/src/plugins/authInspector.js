@@ -17,6 +17,9 @@ const auth = {
     },
     AH: () => {
         return { Authorization: "Bearer " + localStorage.getItem("authToken") }
+    },
+    FAH: () => {
+        return "Bearer " + localStorage.getItem("authToken");
     }
 }
 

@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         condition: {
-            type: DataTypes.STRING,
-            allowNull: false,
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
             validate: {
                 notEmpty: true
             }
@@ -33,8 +33,13 @@ module.exports = (sequelize, DataTypes) => {
         },
         categoryId: {
             type: DataTypes.INTEGER,
-            allowNull: true,
-            defaultValue: ""
+            allowNull: false,
+            defaultValue: 0
+        },
+        profileId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
         },
         available: {
             type: DataTypes.BOOLEAN,
@@ -50,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         classMethods: {
             associate: (models) => {
                 available: true;
-                Products.belongsTo(models.Users);
+                Products.belongsTo(models.Users, { foreignKey: 'profileId' });
                 Products.belongsTo(models.Categories, { foreignKey: 'categoryId', targetKey: 'id' });
             }
         }
