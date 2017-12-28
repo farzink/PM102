@@ -15,6 +15,15 @@ module.exports = app => {
                     result(profile);
                 });
         },
+        update: (model, profileId, result) => {
+            Profiles.update(model, {
+                where: {
+                    id: profileId
+                }
+            }).then(profile => {
+                result(profileId)
+            });
+        },
         profileExistsByEmail: (model, result) => {
             Profiles.findOne({
                 where: { email: model.email }

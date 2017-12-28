@@ -1,7 +1,7 @@
 module.exports = app => {
     const Categories = app.libs.db.init.models.Categories;
     return {
-        findAll: (model, result) => {
+        findAll: (result) => {
             Categories.findAll({})
                 .then(categories => result(categories))
                 .catch(error => {
