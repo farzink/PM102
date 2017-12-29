@@ -10,6 +10,7 @@ import AddProduct from '@/components/Product/Add'
 import IndexProduct from '@/components/Product/Index'
 import Products from '@/components/Products'
 import Profile from '@/components/Profile'
+import Search from '@/components/Search'
 
 Vue.use(Router)
 
@@ -76,6 +77,11 @@ let router = new Router({
             meta: {
                 requiresAuth: true
             }
+        },
+        {
+            path: '/search',
+            name: 'Search',
+            component: Search
         }
     ]
 });

@@ -1,5 +1,7 @@
+import Sequelize from 'sequelize';
 module.exports = app => {
     const Products = app.libs.db.init.models.Products;
+    const op = Sequelize.Op;
     return {
         findAll: (model, result) => {
             Products.findAll({})
@@ -12,6 +14,47 @@ module.exports = app => {
             Products.create(model)
                 .then(product => {
                     return result(product);
+                });
+        },
+        search: (model, result) => {
+            Products.findAll((model.cid != -1) ? ({
+                        where: {
+                            categoryId: model.cid,
+                            [op.or]: [{
+                                    name: {
+                                        [op.like]: "%" + model.key + "%"
+                                    }
+                                },
+                                {
+                                    description: {
+                                        [op.like]: "%" + model.key + "%"
+                                    }
+                                }
+                            ]
+                        },
+                        limit: model.size
+                    }) :
+                    ({
+                        where: {
+                            [op.or]: [{
+                                    name: {
+                                        [op.like]: "%" + model.key + "%"
+                                    }
+                                },
+                                {
+                                    description: {
+                                        [op.like]: "%" + model.key + "%"
+                                    }
+                                }
+                            ]
+                        },
+                        limit: model.size
+                    }))
+                .then(products => {
+                    result(products)
+                })
+                .catch(error => {
+
                 });
         },
         findAllByProfileId: (model, result) => {
@@ -69,3 +112,27 @@ module.exports = app => {
         }
     };
 };
+
+
+
+
+// search: (model, result) => {
+//     Products.findAll({
+//             where: {
+//                 categoryId: model.cid,
+//                 name: {
+//                     [op.like]: "%" + model.key + "%"
+//                 },
+//                 description: {
+//                     [op.like]: "%" + model.key + "%"
+//                 }
+//             },
+//             limit: model.size
+//         })
+//         .then(products => {
+//             result(products)
+//         })
+//         .catch(error => {
+
+//         });
+// }

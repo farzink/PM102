@@ -6,8 +6,15 @@ module.exports = app => {
 
     app.route("/products")
         .get((req, res) => {
-            let model = req.params;
-            repo.findAll(model, (products) => {
+            let model = req.query;
+            let searchParams = {
+                start: (model.start) ? model.start : 0,
+                size: (model.size) ? model.size : 10,
+                cid: (model.cid) ? model.cid : "",
+                key: (model.key) ? model.key : ""
+            }
+
+            repo.search(searchParams, (products) => {
                 res.json({ products: products });
             })
         });
@@ -76,4 +83,4 @@ module.exports = app => {
             })
         })
 
-}
+};

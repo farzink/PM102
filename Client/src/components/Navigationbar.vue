@@ -12,7 +12,7 @@
         <router-link class="nav-link" :to="'/'">Home <span class="sr-only">(current)</span></router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <router-link class="nav-link" :to="'/search'">Search <span class="sr-only">(current)</span></router-link>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

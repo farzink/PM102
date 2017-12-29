@@ -5,6 +5,7 @@
     
     
     
+    
     <header class="masthead text-white text-center">
       <div class="overlay"></div>
       <div class="container">
@@ -15,14 +16,15 @@
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
             <form>
               <div class="form-row">
-                <select class="col-4 col-md-3 form-control" style="height: 48px;font-size: 18px" v-model="selectedCategory">
+                <select class="col-4 col-md-3 form-control" style="height: 48px; font-weight:bolder; font-size: 18px" v-model="selectedCategory">
                   <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{category.name}}</option>
                 </select>
-                <div class="col-7 col-md-8 mb-2 mb-md-0">
-                  <input type="text" class="form-control form-control-lg" placeholder="Enter your item name here...">
+                <div class="col-7 col-md-8 mb-2 mb-md-0 form-group text-left">
+                  <input type="text" class="form-control form-control-lg" v-bind:class="{ 'is-invalid': !$v.term.required && $v.term.$dirty}" placeholder="Enter your item name here..." v-model="term" @input="$v.term.$touch()" required>
+                  <span class="text-light" v-if="!$v.term.required && $v.term.$dirty">search term can not be empty</span>
                 </div>
                 <div class="col-xs-10 col-sm-10 col-1 col-md-1">
-                  <button type="button" class="btn btn-block btn-lg btn-dark text-light fa fa-search" style="padding: 0.5rem;"></button>
+                  <button type="button" class="btn btn-block btn-lg btn-dark text-light fa fa-search" style="padding: 0.5rem;" @click="search()"></button>
                 </div>
               </div>
             </form>
@@ -47,17 +49,32 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
 export default {
   name: 'Home',
   data () {
     return {
         categories: [],
-        selectedCategory: 0
+        selectedCategory: -1,
+        term: ""
+    }
+  },
+  validations : {
+    term: {
+      required   
     }
   },
   methods: {
-    test: function(){
-      this.$toasted.show('rocket science');
+    search: function(){
+      let those=this;
+      if(!this.$v.$invalid){
+        let categoryId = -1;
+        if(this.selectedCategory != those.categories.find(e=> e.name == "All").id)
+          categoryId = this.selectedCategory;
+        this.$router.push(`/search?key=${this.term}&cid=${categoryId}&size=${10}&start=${0}`);
+
+        this.$toasted.show('searching...');
+      }
     }
   },
   mounted: function() {          
