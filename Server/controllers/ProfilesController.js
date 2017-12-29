@@ -4,7 +4,7 @@ const { matchedData, sanitize } = require('express-validator/filter');
 
 module.exports = app => {
     const repo = app.repositories.sql.ProfileRepository;
-    const validator = app.models.viewmodels.task.TaskValidationViewModel;
+    const validator = app.models.viewmodels.profile.ProfileValidationViewModel;
 
 
     app.route("/profiles")
@@ -23,8 +23,8 @@ module.exports = app => {
                     errors.response;
                 } else {
                     var model = req.body;
-                    repo.add(model, (result) => {
-                        res.json({ task: model });
+                    repo.update(model, req.user.id, result => {
+                        res.json({ profile: result });
                     });
                 }
             });

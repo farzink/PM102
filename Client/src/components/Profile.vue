@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
 			<div class="card m-5 p-2" style="width: 60rem;">
   <div class="card-body">
-    <h4 class="card-title">Manage Products</h4>
+    <h4 class="card-title">Manage Profile</h4>
     <h6 class="card-subtitle mb-4 text-muted ">you can add/edit your profile</h6>
     
 
@@ -85,7 +85,7 @@
   <div class="form-group row">
     <label for="inputEmail3" class="col-sm-3 col-form-label">Postal Code</label>
     <div class="col-sm-8">
-      <input class="form-control" id="inputEmail3" placeholder="Postal Code" v-model="postalCode" @input="$v.postalCode.$touch()">            
+      <input class="form-control" id="inputEmail3" placeholder="Postal Code" v-model="postalCode" @input="$v.postalcode.$touch()">            
       <span class="text-danger" v-if="!$v.postalcode.maxLength">postal code can not be more than 20 characters</span>
           </div>    
   </div>
@@ -105,7 +105,7 @@
 
 <div class="form-group row">
     <div class="col-sm-12 offset-md-3 col-md-6">
-      <button class="btn btn-primary" style="width: 10rem" v-bind:class="{disabled :$v.$invalid}" @click="login">Update</button>
+      <button class="btn btn-primary" style="width: 10rem" v-bind:class="{disabled :$v.$invalid}" @click="update">Update</button>
     </div>   
   </div>
    
@@ -168,9 +168,34 @@ export default {
     }
   },
   methods: {    
-    login: function() {     
+    update: function() {     
       if(!this.$v.$invalid){
-        
+        let that = this;
+        this.axios.defaults.headers.common['Authorization'] = this.$auth.FAH();
+        this.axios.put(this.$gc.getBaseUrl("profiles"), {
+            firstname: this.firstname,
+            lastname: this.lastname,
+            street: this.street,
+            houseno: this.houseno,
+            state: this.state,
+            city: this.city,
+            postalcode: this.postalCode,
+            phone: this.phone
+          })
+          .then(function(data){
+            
+            if(data.status == 200) {                                        
+              that.$toasted.show('profile successfully updated.');              
+              that.$router.push("/");
+            }
+            else{              
+              that.$toasted.show('please try again!');              
+            }            
+          })
+          .catch(function(error, data){              
+              that.$toasted.show('plase try again later');              
+            
+          })
       }
     }
   },
@@ -186,7 +211,7 @@ export default {
         zoo.houseno = data.data.profile.houseno;
         zoo.state = data.data.profile.state;
         zoo.city = data.data.profile.city;
-        zoo.postalCode = data.data.profile.postalCode;
+        zoo.postalCode = data.data.profile.postalcode;
         zoo.phone = data.data.profile.phone;
           })
           .catch(function(error){                         
