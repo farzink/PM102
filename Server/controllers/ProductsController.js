@@ -54,7 +54,7 @@ module.exports = app => {
 
                     var model = req.body;
 
-                    console.log(model);
+                    //console.log(model);
                     model.profileId = req.user.id;
                     repo.add(model, (result) => {
                         res.status(201).json({ result: result });

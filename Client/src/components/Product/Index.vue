@@ -1,3 +1,4 @@
+import { src } from 'semver';
 <template>
 
  <div class="row justify-content-center">
@@ -9,7 +10,7 @@
 
     <div class="row"> 
 <div v-for="product in products" class="card p-4 m-3" v-bind:key="product.id" style="width: 25rem;">
-  <img class="card-img-top"  alt="Card image cap">
+  <img class="card-img-top" :src="getImageAddress(product.image)"  alt="Card image cap">
   <div class="card-block">
     <h4 class="card-title">{{product.name}}</h4>
     <p class="card-text">{{product.description}}</p>
@@ -35,7 +36,10 @@ export default {
     }    
   },  
   methods: {
-    
+    getImageAddress: function(path){
+      
+      return this.$gc.getBaseUrl(path)
+    }
   },
   mounted: function() {    
     let that=this;        

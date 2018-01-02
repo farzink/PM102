@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-    const Tasks = sequelize.define("Tasks", {
+    const Images = sequelize.define("Images", {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        title: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
@@ -15,17 +15,17 @@ module.exports = (sequelize, DataTypes) => {
         productId: {
             type: DataTypes.INTEGER
         },
-        done: {
-            type: DataTypes.INTEGER,
+        isDefault: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
         }
     }, {
         classMethods: {
             associate: (models) => {
-                Tasks.belongsTo(models.Users);
+                Images.belongsTo(models.Products, { foreignKey: 'productId' });
             }
         }
     });
-    return Tasks;
+    return Images;
 };

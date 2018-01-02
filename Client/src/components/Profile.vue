@@ -55,7 +55,7 @@
   <div class="form-group row">
     <label for="inputEmail3" class="col-sm-3 col-form-label">House No.</label>
     <div class="col-sm-8">
-      <input class="form-control" id="inputEmail3" placeholder="House No." v-model="street" @input="$v.houseno.$touch()">            
+      <input class="form-control" id="inputEmail3" placeholder="House No." v-model="houseno" @input="$v.houseno.$touch()">            
       <span class="text-danger" v-if="!$v.houseno.maxLength">house no. can not be more than 10 characters</span>
           </div>    
   </div>

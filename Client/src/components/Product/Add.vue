@@ -41,15 +41,9 @@
   <div class="form-group row">
     <label for="inputEmail3" class="col-sm-3 col-form-label">Category</label>
     <div class="col-sm-8">
-      <select name="" id="" class="form-control">
-        <option value="">some value</option>
-        <option value="">some value</option>
-        <option value="">some value</option>
-        <option value="">some value</option>
-        <option value="">some value</option>
-        <option value="">some value</option>
-        <option value="">some value</option>
-      </select>
+      <select class="col-4 col-md-3 form-control" style="height: 48px; font-weight:bold; font-size: 14px" v-model="selectedCategory">
+                  <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{category.name}}</option>
+                </select>
           </div>    
   </div>
 
@@ -67,7 +61,7 @@
   
   <div class="form-group row">
     <div class="col-sm-12">
-      <vue-dropzone  ref="myV ueDropzone" id="dropzone" :options="dropzoneOptions"/>  
+      <vue-dropzone  ref="myVueDropzone" id="dropzone" :options="dropzoneOptions" v-on:vdropzone-removed-file='removeImage'/>  
   </div>
   </div>
   
@@ -114,6 +108,8 @@ export default {
         price: 0,
         isNew: true,
         isUsed: false,
+        categories: [],
+        selectedCategory: -1,
         dropzoneOptions: {
           url: 'http://localhost:2000/resources/upload',
           thumbnailWidth: 150,
@@ -122,7 +118,8 @@ export default {
           maxFiles: 5,
           dictDefaultMessage: "drop your item`s images here",
           addRemoveLinks: true
-      }
+      },
+      ex:''
     }    
   },
   validations :{
@@ -153,7 +150,8 @@ export default {
         this.isUsed = true;
       }
     },
-    add: function() {     
+    add: function() { 
+      this.ex = "busted";
       let that = this;
       if(!this.$v.invalid){
         this.axios.defaults.headers.common['Authorization'] = this.$auth.FAH();
@@ -161,7 +159,7 @@ export default {
             name: this.name,
             price: this.price,
             condition: this.isNew,
-            categoryId: 1,
+            categoryId: this.selectedCategory,
             description: this.description
           })
           .then(function(data){
@@ -179,18 +177,50 @@ export default {
               that.$toasted.show('plase try again later');              
             
           })
-      }
+      }      
+    },
+    removeImage: function(e){
+      
+        this.axios.defaults.headers.common['Authorization'] = this.$auth.FAH();
+        this.axios.delete(this.$gc.getBaseUrl("resources/images/" + e.name + this.ex), {
+           
+          })
+          .then(function(data){           
+           
+          })
+          .catch(function(error, data){              
+              
+            
+          })
     }
   },
   mounted: function() {    
-    let gooz=this;        
-          this.axios.get(this.$gc.getBaseUrl("resources/clear"), { headers: this.$auth.AH() })
-          .then(function(data){
+         
+    let those=this;        
+          // this.axios.get(this.$gc.getBaseUrl("resources/clear"), { headers: this.$auth.AH() })
+          // .then(function(data){
           
-          })
-          .catch(function(error, data){                         
+          // })
+          // .catch(function(error, data){                         
             
+          // })
+
+  
+    
+      
+    // those.categories = those.$gc.getItemByKey("categories");
+    //         those.selectedCategory = those.categories.find(e=> e.name == "All").id;
+          this.axios.get(this.$gc.getBaseUrl("categories"), { headers: this.$auth.AH() })
+          .then(function(data){
+            those.$gc.saveItemByKey("categories", JSON.stringify(data.data.categories));
+            those.categories = data.data.categories;
+            those.selectedCategory = those.categories.find(e=> e.name == "All").id;
           })
+          .catch(function(error){
+            those.categories = those.$gc.getItemByKey("categories");
+            those.selectedCategory = those.categories.find(e=> e.name == "All").id;
+          })
+  
   }
 }
 </script>

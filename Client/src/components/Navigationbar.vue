@@ -26,7 +26,7 @@
         </div>
       </li>
       <li class="nav-item" v-if="signedin">
-        <router-link class="nav-link" :to="'manage/products'">Manage Products</router-link>                
+        <router-link class="nav-link" :to="'/manage/products'">Manage Products</router-link>                
       </li>
     </ul>    
       <router-link v-show="signupVisibility" class="btn btn-outline-primary my-2 my-sm-0 m-2" :to="'register'"  v-if="!signedin">Sign up</router-link>
@@ -82,6 +82,7 @@ export default {
   },
   watch: {
         '$route': function(value) {
+
             this.signedin = this.isSignedIn();
             if(value.path == "/login")
                 this.signinVisibility = false;
@@ -92,6 +93,15 @@ export default {
                 this.signupVisibility = false;
             else
                 this.signupVisibility = true;
+
+            if(value.path == "/manage/products/add")
+            {
+                 this.axios.delete(this.$gc.getBaseUrl("resources/clear"), { headers: this.$auth.AH() })
+                           .then(function(data){
+                                     })
+                           .catch(function(error, data){                                    
+                 })              
+            }
         }
     }
 }

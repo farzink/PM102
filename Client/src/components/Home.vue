@@ -80,8 +80,8 @@ export default {
   mounted: function() {          
     
     let those=this;        
-    those.categories = those.$gc.getItemByKey("categories");
-            those.selectedCategory = those.categories.find(e=> e.name == "All").id;
+    // those.categories = those.$gc.getItemByKey("categories");
+    //         those.selectedCategory = those.categories.find(e=> e.name == "All").id;
           this.axios.get(this.$gc.getBaseUrl("categories"), { headers: this.$auth.AH() })
           .then(function(data){
             those.$gc.saveItemByKey("categories", JSON.stringify(data.data.categories));
