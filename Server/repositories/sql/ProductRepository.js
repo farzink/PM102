@@ -9,7 +9,23 @@ module.exports = app => {
     return {
         findAll: (model, result) => {
             Products.findAll({})
-                .then(products => result(products))
+                .then(products => {
+
+                    result(products.map(product => {
+                        return {
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            condition: product.condiction,
+                            description: product.description,
+                            categoryId: product.categoryId,
+                            available: product.available,
+                            nov: product.nov,
+                            image: "resources/products/images/default/" + product.id,
+                            updated: product.updated_at
+                        }
+                    }))
+                })
                 .catch(error => {
 
                 });
@@ -101,7 +117,20 @@ module.exports = app => {
                         limit: model.size
                     }))
                 .then(products => {
-                    result(products)
+                    result(products.map(product => {
+                        return {
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            condition: product.condiction,
+                            description: product.description,
+                            categoryId: product.categoryId,
+                            available: product.available,
+                            nov: product.nov,
+                            image: "resources/products/images/default/" + product.id,
+                            updated: product.updated_at
+                        }
+                    }))
                 })
                 .catch(error => {
 

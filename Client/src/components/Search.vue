@@ -34,17 +34,24 @@
 
     
     <div class="container">
-        <div class="card m-5" v-for="product in products" v-bind:key="product.id">
-  <h5 class="card-header">{{product.name}}</h5>
-  <div class="card-body">
-    <h5 class="card-title">{{product.name}}</h5>
-    <p class="card-text">{{product.description}}</p>
-    <a href="#" class="btn btn-primary">detail</a>
+      <div class="row">
+        <div class="card m-4" style="width: 20rem;" v-for="product in products" v-bind:key="product.id">
+  <img class="card-img-top" :src="getImageAddress(product.image)" alt="Card image cap">
+  <div class="card-block">
+    <h4 class="card-title text-info m-2">{{product.name}}</h4>
+    <p class="card-text text-dark m-2" style="max-height: 40px; min-height:40px">{{product.description}}</p>
+    <a href="#" class="btn btn-dark m-2 float-right text-light">more</a>
   </div>
 </div>
+
+
+
+  
+  </div>
     </div>
 
-
+ 
+ 
 </div>
     
 
@@ -83,10 +90,14 @@ export default {
           categoryId = this.selectedCategory;
         
         
-        this.$router.push(`/search?key=${this.term}&cid=${categoryId}&size=${10}&start=${0}`);
+        this.$router.push(`/search?key=${this.term}&cid=${categoryId}&size=${9}&start=${0}`);
 
         this.$toasted.show('searching...');
       }
+    },
+    getImageAddress: function(path){
+      
+      return this.$gc.getBaseUrl(path)
     },
     init: function(value){        
         

@@ -71,7 +71,7 @@ export default {
         let categoryId = -1;
         if(this.selectedCategory != those.categories.find(e=> e.name == "All").id)
           categoryId = this.selectedCategory;
-        this.$router.push(`/search?key=${this.term}&cid=${categoryId}&size=${10}&start=${0}`);
+        this.$router.push(`/search?key=${this.term}&cid=${categoryId}&size=${9}&start=${0}`);
 
         this.$toasted.show('searching...');
       }
