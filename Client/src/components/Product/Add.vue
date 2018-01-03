@@ -67,8 +67,8 @@
   
   <div class="form-group row">
     <div class="col-sm-12 offset-md-9 col-md-3">
-      <!-- <button class="btn btn-primary" style="width: 10rem" v-if="!$v.$invalid" @click="login">Sign up</button> -->
-      <button class="btn btn-primary"  style="width: 8rem"  @click="add" v-bind:class="{disabled: $v.$invalid}">Add</button>
+      <router-link class="btn btn-danger m-3" v-if="!addressStatus" style="position:absolute; top:10px; right: 10px; color: white" :to="'/profile'">You need to add your address to add product</router-link>      
+      <button class="btn btn-primary"  style="width: 8rem" v-if="addressStatus"  @click="add" v-bind:class="{disabled: $v.$invalid}">Add</button>
     </div>         
   </div>
     <!-- <div class="col-sm-12 col-md-6">
@@ -119,7 +119,8 @@ export default {
           dictDefaultMessage: "drop your item`s images here",
           addRemoveLinks: true
       },
-      ex:''
+      ex:'',
+      addressStatus: true
     }    
   },
   validations :{
@@ -140,6 +141,16 @@ export default {
   methods: {
     test: function(){
       this.$toasted.show('rocket science');
+    },
+    getAddressStatus: function(){
+      let that = this;
+      this.axios.defaults.headers.common['Authorization'] = this.$auth.FAH();
+        this.axios.get(this.$gc.getBaseUrl("profiles/address/status"))
+          .then(function(data){
+            that.addressStatus = data.data.status;
+          })
+          .catch(function(error, data){              
+          })
     },
     conditioner: function(condition){
       if(condition === 'new'){
@@ -180,7 +191,7 @@ export default {
       }      
     },
     removeImage: function(e){
-      
+
         this.axios.defaults.headers.common['Authorization'] = this.$auth.FAH();
         this.axios.delete(this.$gc.getBaseUrl("resources/images/" + e.name + this.ex), {
            
@@ -195,7 +206,7 @@ export default {
     }
   },
   mounted: function() {    
-         
+         this.getAddressStatus();
     let those=this;        
           // this.axios.get(this.$gc.getBaseUrl("resources/clear"), { headers: this.$auth.AH() })
           // .then(function(data){

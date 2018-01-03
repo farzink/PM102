@@ -16,6 +16,7 @@
   "author": "Farzin",
   "license": "ISC",
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^1.0.0",
     "@types/body-parser": "^1.16.8",
     "@types/express": "^4.0.37",
@@ -23,6 +24,7 @@
     "@types/fs-extra": "^5.0.0",
     "@types/mongoose": "^4.7.27",
     "@types/uuid": "^3.4.3",
+    "axios": "^0.17.1",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "bcrypt": "^1.0.3",

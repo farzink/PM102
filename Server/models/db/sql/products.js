@@ -31,16 +31,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             defaultValue: ""
         },
-        categoryId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0
-        },
-        profileId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0
-        },
         available: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -51,14 +41,37 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 0
         }
-    }, {
-        classMethods: {
-            associate: (models) => {
-                available: true;
-                Products.belongsTo(models.Users, { foreignKey: 'profileId' });
-                Products.belongsTo(models.Categories, { foreignKey: 'categoryId', targetKey: 'id' });
-            }
-        }
     });
+
+
+    Products.associate = (models) => {
+        //available: true;
+        Products.hasMany(models.Images)
+        Products.belongsTo(models.Profiles)
+        Products.belongsTo(models.Categories)
+    };
+
+
+    Products.prototype.isInRadius = function() {
+
+        this.getProfile()
+            .then(profile => {
+                console.log(profile.lat);
+            })
+
+        // var R = 6371e3; // metres
+        // var φ1 = app.repositories.sql.ProductRepository.toRadian(points.first.lat);
+        // var φ2 = app.repositories.sql.ProductRepository.toRadian(points.second.lat);
+        // var Δφ = app.repositories.sql.ProductRepository.toRadian(points.second.lat - points.first.lat);
+        // var Δλ = app.repositories.sql.ProductRepository.toRadian(points.second.lng - points.first.lng);
+
+        // var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        //     Math.cos(φ1) * Math.cos(φ2) *
+        //     Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        // var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // var d = R * c;
+        //console.log(d / 1000);
+    };
     return Products;
 };

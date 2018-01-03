@@ -12,20 +12,18 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true
             }
         },
-        productId: {
-            type: DataTypes.INTEGER
-        },
+        // productId: {
+        //     type: DataTypes.INTEGER
+        // },
         isDefault: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
         }
-    }, {
-        classMethods: {
-            associate: (models) => {
-                Images.belongsTo(models.Products, { foreignKey: 'productId' });
-            }
-        }
     });
+
+    Images.associate = (models) => {
+        Images.belongsTo(models.Products)
+    };
     return Images;
 };

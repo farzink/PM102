@@ -27,7 +27,7 @@
   </div> 
   <div class="form-group row">
     <div class="col-sm-12 offset-md-3 col-md-6">
-      <button class="btn btn-primary" style="width: 10rem" v-if="!$v.$invalid" @click="login">Sign up</button>
+      <button class="btn btn-primary" style="width: 10rem" v-if="!$v.$invalid" @click="login">Sign In</button>
     </div>   
   </div>
     <div class="col-sm-12 col-md-6">

@@ -4,6 +4,14 @@ module.exports = app => {
     const repo = app.repositories.sql.ProductRepository;
     const validator = app.models.viewmodels.product.ProductValidationViewModel;
 
+
+    app.post("/products/inraduis", (req, res) => {
+        let model = req.body
+        repo.findDistance(model, result => {
+            console.log(result)
+            res.json({ distance: result });
+        })
+    });
     app.route("/products")
         .get((req, res) => {
             let model = req.query;
@@ -55,7 +63,8 @@ module.exports = app => {
                     var model = req.body;
 
                     //console.log(model);
-                    model.profileId = req.user.id;
+                    model.profile_id = req.user.id;
+                    model.category_id = req.body.categoryId;
                     repo.add(model, (result) => {
                         res.status(201).json({ result: result });
                     });

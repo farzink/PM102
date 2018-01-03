@@ -17,13 +17,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             defaultValue: ""
         }
-    }, {
-        classMethods: {
-            associate: (models) => {
-                Categories.belongsTo(models.Users);
-                Categories.hasMany(models.Products, {foreignKey: "categoryId", sourceKey: "id"});
-            }
-        }
     });
+
+
+
+    Categories.associate = (models) => {
+        Categories.hasMany(models.Products);
+    };
+
+
     return Categories;
 };

@@ -50,7 +50,7 @@ module.exports = app => {
         getDefaultProductImage: (model, result) => {
             Images.findOne({
                 where: {
-                    productId: model.id,
+                    product_id: model.id,
                     isDefault: true
                 }
             }).then(image => {

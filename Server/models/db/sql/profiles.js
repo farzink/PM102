@@ -58,6 +58,14 @@ module.exports = (sequelize, DataType) => {
             type: DataType.STRING,
             allowNull: false,
         },
+        lat: {
+            type: DataType.STRING,
+            allowNull: true,
+        },
+        long: {
+            type: DataType.STRING,
+            allowNull: true,
+        }
     }, {
         hooks: {
             beforeCreate: profile => {
@@ -67,7 +75,7 @@ module.exports = (sequelize, DataType) => {
         }
     });
     Profiles.associate = (models) => {
-        Profiles.hasMany(models.Tasks);
+        Profiles.hasMany(models.Products);
     };
     Profiles.isPassword = (encodedPassword, password) => {
         return bcrypt.compareSync(password, encodedPassword);

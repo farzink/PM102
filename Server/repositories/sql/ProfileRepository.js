@@ -16,6 +16,7 @@ module.exports = app => {
                 });
         },
         update: (model, profileId, result) => {
+
             Profiles.update(model, {
                 where: {
                     id: profileId
@@ -33,6 +34,18 @@ module.exports = app => {
                     return result(false);
                 else
                     return result(true);
+            })
+        },
+        isAddressComplete: (model, result) => {
+            Profiles.findOne({
+                where: { id: model }
+            }).then(profile => {
+
+                if (profile.lat != "" && profile.long != "") {
+                    result(true);
+                } else {
+                    result(false)
+                }
             })
         },
         findById: (model, result) => {
