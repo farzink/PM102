@@ -44,7 +44,31 @@ module.exports = app => {
         if (fs.existsSync(path)) {
             fs.remove(path);
         }
+        res.json()
     });
+
+
+
+    app.delete('/resources/products/images/:id/:image', app.xticate.authenticate(), function(req, res) {
+        //console.log(req.params.id);
+
+        let path = 'products/images/' + req.params.id + "/" + req.params.image;
+        console.log(path)
+        if (fs.existsSync(path)) {
+            repo.delete({
+                name: req.params.image
+                    //product_id: req.params.id
+            }, result => {
+                fs.remove(path);
+                res.json()
+            })
+        }
+        res.json()
+    });
+
+
+
+
     app.get('/resources/file', function(req, res) {
 
         let file = "filename.jpg";

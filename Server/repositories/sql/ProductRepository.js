@@ -8,6 +8,7 @@ module.exports = app => {
 
     const Products = app.libs.db.init.models.Products;
     const Profiles = app.libs.db.init.models.Profiles;
+    const Categories = app.libs.db.init.models.Categories;
     const imageRepository = app.repositories.sql.ImageRepository;
 
     const op = Sequelize.Op;
@@ -63,7 +64,7 @@ module.exports = app => {
                     if (!fs.existsSync(path)) {
                         fs.mkdirsSync(path);
                     }
-                    let temp = 'profiles/temp/' + model.profileId;
+                    let temp = 'profiles/temp/' + model.profile_id;
 
 
                     if (fs.existsSync(temp)) {
@@ -74,9 +75,10 @@ module.exports = app => {
                         files.forEach(function(file, index) {
                             let filename = uuid() + ".jpg";
                             fs.copySync(temp + "/" + file, path + "/" + filename)
+
                             imageRepository.add({
                                 name: filename,
-                                productId: product.id,
+                                product_id: product.id,
                                 isDefault: (index === 0) ? true : false
                             }, result => {
 
@@ -259,18 +261,18 @@ module.exports = app => {
         findDistance: (points) => {
 
             var R = 6371e3; // metres
-            var φ1 = app.repositories.sql.ProductRepository.toRadian(points.first.lat);
-            var φ2 = app.repositories.sql.ProductRepository.toRadian(points.second.lat);
-            var Δφ = app.repositories.sql.ProductRepository.toRadian(points.second.lat - points.first.lat);
-            var Δλ = app.repositories.sql.ProductRepository.toRadian(points.second.lng - points.first.lng);
+            var t1 = app.repositories.sql.ProductRepository.toRadian(points.first.lat);
+            var t2 = app.repositories.sql.ProductRepository.toRadian(points.second.lat);
+            var dt = app.repositories.sql.ProductRepository.toRadian(points.second.lat - points.first.lat);
+            var dl = app.repositories.sql.ProductRepository.toRadian(points.second.lng - points.first.lng);
 
-            var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            var a = Math.sin(dt / 2) * Math.sin(dt / 2) +
+                Math.cos(t1) * Math.cos(t2) *
+                Math.sin(dl / 2) * Math.sin(dl / 2);
             var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
             var d = R * c;
-            console.log(d / 1000);
+
             return d;
         },
         toRadian: function(angle) {
@@ -313,31 +315,71 @@ module.exports = app => {
         //             return result(product);
         //         });
         // },
-        deleteById: (model, result) => {
+        delete: (model, result) => {
+
             Products.destroy({
                     where: {
                         id: model.id
                     }
                 })
                 .then(product => {
-                    return result(model.id)
+                    // imageRepository.deleteByProductId(model.id, res => {
+                    //     return result(true)
+                    // })
+                    return result(true)
                 })
         },
-        putById: (model, params, result) => {
-            let values = {
+        update: (model, result) => {
+            let product = {
                 name: model.name,
                 description: model.description,
                 price: model.price,
                 condition: model.condition,
-                available: model.available,
-                isAktive: model.visible
-            }
-            let selector = {
-                where: { id: params.id }
-            }
+                category_id: model.category_id
+                    //available: model.available,
 
-            Products.update(values, selector)
+            }
+            Products.update(product, {
+                    where: {
+                        id: model.product_id
+                    }
+                })
                 .then(product => {
+                    if (!fs.existsSync('products')) {
+                        fs.mkdirsSync('products');
+                    }
+                    if (!fs.existsSync('products/images'))
+                        fs.mkdirsSync('products/images');
+
+                    let path = 'products/images/' + model.product_id;
+                    if (!fs.existsSync(path)) {
+                        fs.mkdirsSync(path);
+                    }
+                    let temp = 'profiles/temp/' + model.profile_id;
+
+                    console.log(temp)
+
+                    if (fs.existsSync(temp)) {
+
+                        let files = fs.readdirSync(temp);
+
+
+                        files.forEach(function(file, index) {
+                            let filename = uuid() + ".jpg";
+                            fs.copySync(temp + "/" + file, path + "/" + filename)
+
+                            imageRepository.add({
+                                name: filename,
+                                product_id: model.product_id,
+                                isDefault: (index === 0) ? true : false
+                            }, result => {
+
+                            });
+                        });
+                        fs.removeSync(temp)
+                    }
+
+
                     return result(product)
                 })
         },
@@ -366,6 +408,35 @@ module.exports = app => {
                 })
             })
 
+        },
+        getByIdWithImages: (model, result) => {
+
+            Products.findOne({
+                where: { id: model.id },
+                include: [{
+                    model: Categories
+                }]
+            }).then(product => {
+                imageRepository.getProductImages({
+                    id: product.id
+                }, images => {
+
+                    //var image = (image == null) ? "0/default" : product.id + "/" + image.name;
+
+                    return result({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        condition: product.condition,
+                        description: product.description,
+                        categoryId: (product.dataValues.Category != undefined) ? product.dataValues.Category.dataValues.id : -1,
+                        available: product.available,
+                        nov: product.nov,
+                        images: images,
+                        updated: product.updated_at
+                    })
+                })
+            })
         }
     };
 };

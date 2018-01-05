@@ -29,14 +29,25 @@ module.exports = app => {
 
                 });
         },
-        deleteById: (model, result) => {
+        delete: (model, result) => {
             Images.destroy({
                     where: {
-                        id: model.id
+                        name: model.name
                     }
                 })
                 .then(image => {
-                    return result(image.id)
+                    return result(true)
+                })
+        },
+        deleteByProductId: (model, result) => {
+
+            Images.destroy({
+                    where: {
+                        product_id: model
+                    }
+                })
+                .then(image => {
+                    return result(true)
                 })
         },
         getById: (model, result) => {
@@ -51,10 +62,25 @@ module.exports = app => {
             Images.findOne({
                 where: {
                     product_id: model.id,
-                    isDefault: true
-                }
+                    //isDefault: true
+                },
+                limit: 1
             }).then(image => {
                 return result(image)
+            })
+        },
+        getProductImages: (model, result) => {
+            Images.findAll({
+                where: {
+                    product_id: model.id
+                }
+            }).then(images => {
+                return result(images.map(image => {
+                    return {
+                        name: image.name,
+                        isDefault: image.isDefault
+                    }
+                }))
             })
 
         }

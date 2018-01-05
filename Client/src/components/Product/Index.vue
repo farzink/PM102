@@ -10,11 +10,12 @@ import { src } from 'semver';
 
     <div class="row"> 
 <div v-for="product in products" class="card p-4 m-3" v-bind:key="product.id" style="width: 25rem;">
-  <img class="card-img-top" :src="getImageAddress(product.image)"  alt="Card image cap">
+  <img class="card-img-top" :src="getImageAddress(product.image)"  alt="Card image cap" style="min-height: 250px; max-height: 250px">
   <div class="card-block">
     <h4 class="card-title">{{product.name}}</h4>
     <p class="card-text">{{product.description}}</p>
-    <a href="#" class="btn btn-primary text-light">Edit</a>
+    <router-link class="btn btn btn-secondary rounded text-light float-right" :to="'/manage/products/edit/' + product.id">Edit</router-link>                
+    <!-- <a href="#" class="btn btn-primary text-light">Edit</a> -->
   </div>
   
 </div>
@@ -41,15 +42,15 @@ export default {
       return this.$gc.getBaseUrl(path)
     }
   },
-  mounted: function() {    
+  beforeMount: function() {    
     let that=this;        
-          this.axios.get(this.$gc.getBaseUrl("products/profile"), { headers: this.$auth.AH() })
+          this.axios.get(this.$gc.getBaseUrl("products/profile/repo/items"), { headers: this.$auth.AH() })
           .then(function(data){              
               that.products = data.data.products;          
           })
           .catch(function(error){                         
             console.log(error);
-          })
+          })    
   }
 }
 </script>

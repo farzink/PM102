@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Images.associate = (models) => {
-        Images.belongsTo(models.Products)
+        Images.belongsTo(models.Products, { onDelete: 'cascade' })
     };
     return Images;
 };

@@ -7,6 +7,7 @@ import Storage from '@/components/Storage'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import AddProduct from '@/components/Product/Add'
+import EditProduct from '@/components/Product/Edit'
 import IndexProduct from '@/components/Product/Index'
 import Products from '@/components/Products'
 import Profile from '@/components/Profile'
@@ -58,6 +59,14 @@ let router = new Router({
             path: '/manage/products/add',
             name: 'AddProduct',
             component: AddProduct,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/manage/products/edit/:id',
+            name: 'EditProduct',
+            component: EditProduct,
             meta: {
                 requiresAuth: true
             }

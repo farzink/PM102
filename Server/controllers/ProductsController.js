@@ -4,11 +4,21 @@ module.exports = app => {
     const repo = app.repositories.sql.ProductRepository;
     const validator = app.models.viewmodels.product.ProductValidationViewModel;
 
+    app.route("/products/profile/repo/items")
+        .all(app.xticate.authenticate())
+
+    .get((req, res) => {
+
+        let profileId = req.user.id;
+        repo.findAllByProfileId(profileId, (products) => {
+            res.json({ products: products });
+        })
+    });
 
     app.post("/products/inraduis", (req, res) => {
         let model = req.body
         repo.findDistance(model, result => {
-            console.log(result)
+
             res.json({ distance: result });
         })
     });
@@ -68,20 +78,25 @@ module.exports = app => {
 
 
 
-    app.route("/products/profile")
-        .all(app.xticate.authenticate())
-        .get((req, res) => {
-            let profileId = req.user.id;
-            repo.findAllByProfileId(profileId, (products) => {
-                res.json({ products: products });
-            })
-        });
+
 
 
     app.route("/products/:id")
         .get((req, res) => {
+
             let model = req.params
             repo.getById(model, (result) => {
+                try {
+                    res.json({ product: result })
+                } catch (err) {
+                    res.json(err.message)
+                }
+            })
+        });
+    app.route("/products/full/:id")
+        .get((req, res) => {
+            let model = req.params
+            repo.getByIdWithImages(model, (result) => {
                 try {
                     res.json({ product: result })
                 } catch (err) {
@@ -99,35 +114,37 @@ module.exports = app => {
                     errors.response();
                 } else {
 
-                    var model = req.body;
-
-                    //console.log(model);
-                    model.profile_id = req.user.id;
-                    model.category_id = req.body.categoryId;
-                    repo.add(model, (result) => {
+                    repo.add({
+                        name: req.body.name,
+                        price: req.body.price,
+                        category_id: req.body.categoryId,
+                        description: req.body.description,
+                        profile_id: req.user.id,
+                        condition: req.body.condition
+                    }, (result) => {
                         res.status(201).json({ result: result });
                     });
                 }
             })
         .put((req, res) => {
-            let model = req.body
-            let params = req.params
-            repo.putById(model, params, (result) => {
-                try {
-                    res.json({ product: result });
-                } catch (err) {
-                    res.json(err.message);
-                }
+            var model = req.body
+            model.profile_id = req.user.id
+            console.log(model)
+            repo.update(model, result => {
+                res.json({ product: result });
             })
         })
+
+
+
+
+    app.route("/products/:id")
+        .all(app.xticate.authenticate())
         .delete((req, res) => {
             let model = req.params
-            repo.deleteById(model, (result) => {
-                try {
-                    res.status(200).json({ result: result });
-                } catch (err) {
-                    res.json(err.message);
-                }
+
+            repo.delete(model, result => {
+                res.json({ success: true });
             })
         })
 

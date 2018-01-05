@@ -67,7 +67,7 @@
   
   <div class="form-group row">
     <div class="col-sm-12 offset-md-9 col-md-3">
-      <router-link class="btn btn-danger m-3" v-if="!addressStatus" style="position:absolute; top:10px; right: 10px; color: white" :to="'/profile'">You need to add your address to add product</router-link>      
+      <router-link class="btn btn-danger m-3shop" v-if="!addressStatus" style="position:absolute; top:10px; right: 10px; color: white" :to="'/profile'">You need to add your address to add product</router-link>      
       <button class="btn btn-primary"  style="width: 8rem" v-if="addressStatus"  @click="add" v-bind:class="{disabled: $v.$invalid}">Add</button>
     </div>         
   </div>
@@ -138,10 +138,7 @@ export default {
       between: between(0, 99999999)
     }
   },
-  methods: {
-    test: function(){
-      this.$toasted.show('rocket science');
-    },
+  methods: {    
     getAddressStatus: function(){
       let that = this;
       this.axios.defaults.headers.common['Authorization'] = this.$auth.FAH();
@@ -166,6 +163,7 @@ export default {
       let that = this;
       if(!this.$v.invalid){
         this.axios.defaults.headers.common['Authorization'] = this.$auth.FAH();
+        console.log(this.price)
         this.axios.post(this.$gc.getBaseUrl("products"), {
             name: this.name,
             price: this.price,
