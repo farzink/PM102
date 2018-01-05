@@ -83,7 +83,8 @@ export default {
   },
   methods: {
     search: function(){
-      
+      if(this.term != "")
+      {
       if(!this.$v.$invalid){
         let categoryId = -1;
         if(this.selectedCategory != (this.categories.find(e=> e.name == "All").id))
@@ -91,8 +92,8 @@ export default {
         
         
         this.$router.push(`/search?key=${this.term}&cid=${categoryId}&size=${9}&start=${0}`);
-
         this.$toasted.show('searching...');
+      }
       }
     },
     getImageAddress: function(path){
@@ -100,7 +101,8 @@ export default {
       return this.$gc.getBaseUrl(path)
     },
     init: function(value){        
-        
+        if(this.term != "")
+        {
         this.categoryId = value.cid;
         this.size = value.size;
         this.start = value.start;
@@ -115,6 +117,7 @@ export default {
           .catch(function(error){
             
           })
+        }
     }
   },
   mounted: function() {          

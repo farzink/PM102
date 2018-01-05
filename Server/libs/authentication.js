@@ -23,17 +23,34 @@ module.exports = app => {
             })
             .catch(error => authorized(error, null));
     });
-    passport.use(strategy);
+
+
+
 
     const authUtil = {
         initialize: () => {
             return passport.initialize();
         },
         authenticate: () => {
-
+            passport.use(strategy);
             var authentication = passport.authenticate("jwt", cfg.jwtSession);
-            console.log(authentication)
+
+            //console.log(authentication)
             return authentication;
+        },
+        profileProvider: (req, result) => {
+            let header = req.headers['authorization'];
+            if (header != undefined) {
+                var jwt = require('json-web-token');
+                var token = header.split("Bearer ")[1];
+                jwt.decode(cfg.jwtSecret, token, function(err, decodedPayload, decodedHeader) {
+                    if (err) {
+                        result(-1);
+                    } else {
+                        result(decodedPayload.id);
+                    }
+                });
+            }
         }
     };
     app.xticate = authUtil;

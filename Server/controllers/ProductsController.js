@@ -12,20 +12,59 @@ module.exports = app => {
             res.json({ distance: result });
         })
     });
-    app.route("/products")
-        .get((req, res) => {
+    app.get("/products", (req, res) => {
+        app.xticate.profileProvider(req, result => {
+            let desiredDistance = 1;
+            var coordinate = null;
             let model = req.query;
+            if (model.term == undefined)
+                model.term = "";
             let searchParams = {
                 start: (model.start) ? model.start : 0,
                 size: (model.size) ? model.size : 10,
                 cid: (model.cid) ? model.cid : "",
-                key: (model.key) ? model.key : ""
+                key: (model.key) ? model.key : "",
+                profileId: null
             }
 
-            repo.search(searchParams, (products) => {
-                res.json({ products: products });
-            })
+            if (result != -1) {
+                app.repositories.sql.ProfileRepository.findById(result, profile => {
+
+                    if (profile.lat != "" && profile.long != "") {
+                        coordinate = app.repositories.sql.ProductRepository.getLatandLngFor(desiredDistance, {
+                                lat: profile.lat,
+                                lng: profile.long
+                            })
+                            //1
+
+                        searchParams.profileId = result;
+
+
+
+                        repo.searchByRadius(searchParams, coordinate, (products) => {
+                            res.json({ products: products });
+                        })
+                    } else {
+
+                        searchParams.profileId = result;
+
+                        repo.search(searchParams, (products) => {
+                            res.json({ products: products });
+                        })
+                    }
+                });
+            } else {
+                //3
+                searchParams.profileId = -1;
+                repo.search(searchParams, (products) => {
+                    res.json({ products: products });
+                })
+            }
+
+
+
         });
+    });
 
 
 

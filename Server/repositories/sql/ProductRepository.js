@@ -3,11 +3,28 @@ import * as fs from 'fs-extra'
 const uuid = require('uuid/v1');
 
 module.exports = app => {
+
+
+
     const Products = app.libs.db.init.models.Products;
     const Profiles = app.libs.db.init.models.Profiles;
     const imageRepository = app.repositories.sql.ImageRepository;
+
     const op = Sequelize.Op;
+
+
     return {
+        getLatandLngFor: (distance, point) => {
+            let lngBase = 0.015500
+            let latBase = 0.090000
+
+            return {
+                lngup: lngBase * distance + parseFloat(point.lng),
+                latright: latBase * distance + parseFloat(point.lat),
+                lngdown: parseFloat(point.lng) - lngBase * distance,
+                latleft: parseFloat(point.lat) - latBase * distance
+            }
+        },
         findAll: (model, result) => {
             Products.findAll({})
                 .then(products => {
@@ -84,7 +101,11 @@ module.exports = app => {
                     return result(product);
                 });
         },
-        search: (model, result) => {
+        searchByRadius: (model, coordinate, result) => {
+
+
+
+
             Products.findAll((model.cid != -1) ? ({
                         where: {
                             categoryId: model.cid,
@@ -123,12 +144,96 @@ module.exports = app => {
                             where: {
                                 lat: {
                                     [op.or]: [{
-                                        [op.gt]: 10,
-                                        [op.lt]: 60
+                                        [op.gt]: coordinate.latleft,
+                                        [op.lt]: coordinate.latright
+                                    }]
+                                },
+                                long: {
+                                    [op.or]: [{
+                                        [op.gt]: coordinate.lngdown,
+                                        [op.lt]: coordinate.lngup
                                     }]
                                 }
                             }
                         }],
+                        limit: model.size
+                    }))
+                .then(products => {
+                    result(products.map(product => {
+                        return {
+
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            condition: product.condiction,
+                            description: product.description,
+                            categoryId: product.categoryId,
+                            available: product.available,
+                            nov: product.nov,
+                            image: "resources/products/images/default/" + product.id,
+                            updated: product.updated_at,
+                            lat: product.dataValues.Profile.dataValues.lat,
+                            lng: product.dataValues.Profile.dataValues.long
+                        }
+
+                    }))
+                })
+                .catch(error => {
+
+                });
+        },
+
+
+
+        search: (model, result) => {
+
+
+
+
+            Products.findAll((model.cid != -1) ? ({
+                        where: {
+                            categoryId: model.cid,
+                            [op.or]: [{
+                                    name: {
+                                        [op.like]: "%" + model.key + "%"
+                                    }
+                                },
+                                {
+                                    description: {
+                                        [op.like]: "%" + model.key + "%"
+                                    }
+                                }
+                            ]
+                        },
+                        limit: model.size
+                    }) :
+                    ({
+                        where: {
+                            [op.or]: [{
+                                        name: {
+                                            [op.like]: "%" + model.key + "%"
+                                        }
+                                    },
+                                    {
+                                        description: {
+                                            [op.like]: "%" + model.key + "%"
+                                        }
+                                    }
+                                ]
+                                // ,
+                                // [op.and]: Sequelize.where(Sequelize.fn('FUNCTION',))                            
+                        },
+                        // include: [{
+                        //     model: Profiles,
+                        //     where: {
+                        //         lat: {
+                        //             [op.or]: [{
+                        //                 [op.gt]: 10,
+                        //                 [op.lt]: 60
+                        //             }]
+                        //         }
+                        //     }
+                        // }],
                         limit: model.size
                     }))
                 .then(products => {
@@ -183,8 +288,7 @@ module.exports = app => {
                     }
                 })
                 .then(products => result(products.map(product => {
-                    console.log("--------------------------------")
-                    product.isInRadius(null);
+
 
                     return {
                         id: product.id,
