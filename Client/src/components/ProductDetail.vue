@@ -60,7 +60,7 @@
               <span class="text-light fa fa-close fa-2x" style="position: absolute; right: 4px; top:4px" @click="chatOff()"></span>
               <div class="p-2">
               <h6 class="m-1 text-light">Message To Owner</h6>
-              <textarea name="" id="" cols="31" rows="9"></textarea>
+              <textarea name="" id="" cols="45" rows="12" v-model="serverMessage" style="font-size: 11px"></textarea>
               <input type="text" name="" id="" v-model="messageToSend">
               <button class="btn btn-success" style="height: 40px" @click="send">send</button>
                 </div>
@@ -100,7 +100,8 @@ export default {
         showChat: false,
         showChatClass: false,
         hideChatClass: true,
-        messageToSend: ""
+        messageToSend: "",
+        serverMessage: ""
     }
   },
   methods: {
@@ -124,7 +125,17 @@ export default {
         this.showChatClass = false;
     },
     send: function(){
+        const socket = new WebSocket('ws://localhost:41200', 'echo-protocol');
+        let that = this;
+        // Connection opened
+        socket.addEventListener('open', function(event) {
+            socket.send('handshake...');
+        });
 
+        // Listen for messages
+        socket.addEventListener('message', function(event) {
+            that.serverMessage += 'Message from server ' + event.data + "\n";
+        });
     }
   },
   mounted: function() {    

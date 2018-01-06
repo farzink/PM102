@@ -18,4 +18,5 @@ consign()
 .then("controllers")
 
 .then("libs/boot.js")
+    .then("websocket")
     .into(app);

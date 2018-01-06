@@ -414,7 +414,8 @@ module.exports = app => {
             Products.findOne({
                 where: { id: model.id },
                 include: [{
-                    model: Categories
+                    model: Categories,
+                    model: Profiles
                 }]
             }).then(product => {
                 imageRepository.getProductImages({
@@ -433,7 +434,8 @@ module.exports = app => {
                         available: product.available,
                         nov: product.nov,
                         images: images,
-                        updated: product.updated_at
+                        updated: product.updated_at,
+                        owner: product.dataValues.Profile.dataValues.email
                     })
                 })
             })

@@ -24,6 +24,7 @@
     "@types/fs-extra": "^5.0.0",
     "@types/mongoose": "^4.7.27",
     "@types/uuid": "^3.4.3",
+    "@types/websocket": "0.0.35",
     "axios": "^0.17.1",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -42,7 +43,8 @@
     "passport-jwt": "^3.0.1",
     "sequelize": "^4.22.8",
     "sqlite": "^2.8.0",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "websocket": "^1.0.25"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
