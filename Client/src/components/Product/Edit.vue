@@ -136,7 +136,7 @@ export default {
     },
     description: {
       required,
-      maxLength: maxLength(500)
+      maxLength: maxLength(1000)
     },
     price: {
       required,

@@ -39,8 +39,8 @@
   <img class="card-img-top" :src="getImageAddress(product.image)" alt="Card image cap">
   <div class="card-block">
     <h4 class="card-title text-info m-2">{{product.name}}</h4>
-    <p class="card-text text-dark m-2" style="max-height: 40px; min-height:40px">{{product.description}}</p>
-    <a href="#" class="btn btn-dark m-2 float-right text-light">more</a>
+    <p class="card-text text-dark m-2" style="max-height: 40px; min-height:40px">{{product.description.slice(0, 100) + "..."}}</p>
+    <router-link class="btn btn-dark m-2 float-right text-light" :to="'/productdetail/' + product.id">more</router-link>                    
   </div>
 </div>
 
@@ -101,7 +101,7 @@ export default {
       return this.$gc.getBaseUrl(path)
     },
     init: function(value){        
-        if(this.term != "")
+        if(value.term != "")
         {
         this.categoryId = value.cid;
         this.size = value.size;
@@ -120,7 +120,7 @@ export default {
         }
     }
   },
-  mounted: function() {          
+  beforeMount: function() {          
     this.init(this.$router.history.current.query);
     let those=this;        
     those.categories = those.$gc.getItemByKey("categories");

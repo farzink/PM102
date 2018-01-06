@@ -18,6 +18,7 @@
 import CustomHeader from '@/components/CustomHeader'
 import Sidebar from '@/components/Sidebar'
 import Navigationbar from '@/components/Navigationbar'
+
 // import vue2Dropzone from 'vue2-dropzone'
 // import 'vue2-dropzone/dist/vue2Dropzone.css'
 
@@ -26,7 +27,7 @@ export default {
   components: {
     CustomHeader,
     Sidebar,
-    Navigationbar
+    Navigationbar,
     
   },
   data() {

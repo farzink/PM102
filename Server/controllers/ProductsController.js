@@ -31,7 +31,7 @@ module.exports = app => {
                 model.term = "";
             let searchParams = {
                 start: (model.start) ? model.start : 0,
-                size: (model.size) ? model.size : 10,
+                size: (model.size) ? model.size : 9,
                 cid: (model.cid) ? model.cid : "",
                 key: (model.key) ? model.key : "",
                 profileId: null
@@ -83,7 +83,7 @@ module.exports = app => {
 
     app.route("/products/:id")
         .get((req, res) => {
-
+            console.log("------------------product/:id-------------------")
             let model = req.params
             repo.getById(model, (result) => {
                 try {

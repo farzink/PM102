@@ -20,7 +20,7 @@
                   <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{category.name}}</option>
                 </select>
                 <div class="col-7 col-md-8 mb-2 mb-md-0 form-group text-left">
-                  <input type="text" class="form-control form-control-lg" v-bind:class="{ 'is-invalid': !$v.term.required && $v.term.$dirty}" placeholder="Enter your item name here..." v-model="term" @input="$v.term.$touch()" required>
+                  <input type="text" class="form-control form-control-lg" v-bind:class="{ 'is-invalid': !$v.term.required && $v.term.$dirty}" placeholder="Enter your item name here..." v-on:keyup.enter="search()" v-model="term" @input="$v.term.$touch()" required>
                   <span class="text-light" v-if="!$v.term.required && $v.term.$dirty">search term can not be empty</span>
                 </div>
                 <div class="col-xs-10 col-sm-10 col-1 col-md-1">

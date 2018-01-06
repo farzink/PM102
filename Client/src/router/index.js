@@ -12,6 +12,7 @@ import IndexProduct from '@/components/Product/Index'
 import Products from '@/components/Products'
 import Profile from '@/components/Profile'
 import Search from '@/components/Search'
+import ProductDetail from '@/components/ProductDetail'
 
 Vue.use(Router)
 
@@ -70,6 +71,11 @@ let router = new Router({
             meta: {
                 requiresAuth: true
             }
+        },
+        {
+            path: '/productdetail/:id',
+            name: 'ProductDetail',
+            component: ProductDetail
         },
         {
             path: '/manage/products/index',
