@@ -9,6 +9,7 @@ import Register from '@/components/Register'
 import AddProduct from '@/components/Product/Add'
 import EditProduct from '@/components/Product/Edit'
 import IndexProduct from '@/components/Product/Index'
+import Statistics from '@/components/Product/Statistics'
 import Products from '@/components/Products'
 import Profile from '@/components/Profile'
 import Search from '@/components/Search'
@@ -89,6 +90,14 @@ let router = new Router({
             path: '/profile',
             name: 'Profile',
             component: Profile,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/manage/products/statistics',
+            name: 'Statistics',
+            component: Statistics,
             meta: {
                 requiresAuth: true
             }

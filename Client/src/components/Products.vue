@@ -39,7 +39,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-3">      
-      <button class="btn btn-secondary"  @click="login">Review</button>
+      <router-link class="btn btn-secondary text-white" :to="'/manage/products/statistics'">Review</router-link>                  
     </div>         
     
   </div>
