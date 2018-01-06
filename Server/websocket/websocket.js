@@ -9,10 +9,14 @@ module.exports = app => {
     var clients = [];
 
     var interval = setInterval(function() {
-        if (clients.length > 0) {
-            var connection = clients[0].connection;
-            connection.sendUTF("daily news...");
-        }
+        clients.forEach(function(client) {
+            if (client.isAlive === false)
+                clients.pop(client);
+            else {
+                client.connection.sendUTF("daily news...");
+            }
+        });
+
     }, 5000);
     var server = http.createServer(function(request, response) {
         console.log((new Date()) + ' Received request for ' + request.url);

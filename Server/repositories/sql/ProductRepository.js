@@ -418,6 +418,14 @@ module.exports = app => {
                     model: Profiles
                 }]
             }).then(product => {
+                Products.update({
+                    nov: Sequelize.literal('nov + 1')
+                }, {
+                    where: {
+                        id: model.id
+                    }
+                });
+
                 imageRepository.getProductImages({
                     id: product.id
                 }, images => {

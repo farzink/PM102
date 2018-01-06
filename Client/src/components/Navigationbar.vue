@@ -29,8 +29,8 @@
         <router-link class="nav-link" :to="'/manage/products'">Manage Products</router-link>                
       </li>
     </ul>    
-      <router-link v-show="signupVisibility" class="btn btn-outline-primary my-2 my-sm-0 m-2" :to="'register'"  v-if="!signedin">Sign up</router-link>
-      <router-link v-show="signinVisibility" class="btn btn-outline-success my-2 my-sm-0 m-2"  v-if="!signedin" :to="'login'">Sign in</router-link>                      
+      <router-link v-show="signupVisibility" class="btn btn-outline-primary my-2 my-sm-0 m-2" :to="'/register'"  v-if="!signedin">Sign up</router-link>
+      <router-link v-show="signinVisibility" class="btn btn-outline-success my-2 my-sm-0 m-2"  v-if="!signedin" :to="'/login'">Sign in</router-link>                      
       <button class="btn btn-outline-warning my-2 my-sm-0 m-2 text-warning"  v-if="signedin" @click="logoff()">Log out</button>                
       <router-link v-show="signinVisibility" class="btn btn btn-secondary rounded mw-100 fa fa-user white" v-if="signedin" :to="'/profile'"></router-link>                
       </div>

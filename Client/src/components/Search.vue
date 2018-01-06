@@ -25,7 +25,7 @@
                 <div class="col-xs-10 col-sm-10 col-1 col-md-1">
                   <button type="button" class="btn btn-block btn-lg btn-dark text-light fa fa-search" style="padding: 0.5rem;" @click="search()"></button>
                 </div>
-              </div>
+              </div> 
             </form>
           </div>
         </div>
