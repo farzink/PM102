@@ -13,7 +13,7 @@ import { src } from 'semver';
   <img class="card-img-top" :src="getImageAddress(product.image)"  alt="Card image cap" style="min-height: 250px; max-height: 250px">
   <div class="card-block">
     <h4 class="card-title">{{product.name}}</h4>
-    <p class="card-text">{{product.description}}</p>
+    <p class="card-text">{{product.description.slice(0, 100) + "..."}}</p>
     <router-link class="btn btn btn-secondary rounded text-light float-right" :to="'/manage/products/edit/' + product.id">Edit</router-link>                
     <!-- <a href="#" class="btn btn-primary text-light">Edit</a> -->
   </div>

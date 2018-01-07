@@ -36,8 +36,8 @@
               <br>
               <br>
               <h4 class="text-muted">Added on</h4>
-              <h6 class="text-info">{{updated.split("T")[0].slice(0, 10)}}</h6>
-              <h6 class="text-info">{{updated.split("T")[1].slice(0, 8)}}</h6>
+              <h6 class="text-info">{{(updated != undefined) ? updated.split("T")[0].slice(0, 10) : ""}}</h6>
+              <h6 class="text-info">{{(updated.split("T").length > 1) ? updated.split("T")[1].slice(0, 8) : ""}}</h6>
 
 
               <br>
@@ -60,8 +60,10 @@
               <span class="text-light fa fa-close fa-2x" style="position: absolute; right: 4px; top:4px" @click="chatOff()"></span>
               <div class="p-2">
               <h6 class="m-1 text-light">Message To Owner</h6>
-              <textarea name="" id="" cols="45" rows="12" v-model="serverMessage" style="font-size: 11px"></textarea>
-              <input type="text" name="" id="" v-model="messageToSend">
+              <div ref="serverMessageContainer" id="" style="font-size: 11px: width: 180px; height: 220px; background-color: white">
+                  <span style="display: block; font-size: 11px" v-for="(message, index) in serverMessages" :key="index" v-bind:class="{ 'text-primary' : message.isSent, 'text-success': !message.isSent }">{{message.message}}</span>
+              </div>
+              <input type="text" name="" id="" v-model="messageToSend" v-on:keyup.enter="send">
               <button class="btn btn-success" style="height: 40px" @click="send">send</button>
                 </div>
           </div>
@@ -101,7 +103,9 @@ export default {
         showChatClass: false,
         hideChatClass: true,
         messageToSend: "",
-        serverMessage: ""
+        serverMessages: [],
+        socket: null,
+        owner: ""
     }
   },
   methods: {
@@ -115,7 +119,8 @@ export default {
       this.$refs.lightbox.showImage(index)
     },
     chatOn: function(){
-        
+        var profile = this.$auth.getProfile();
+        this.socket.send(`${profile}~${profile}`);
         this.hideChatClass = !this.hideChatClass;
         this.showChatClass = !this.showChatClass;
     },
@@ -125,21 +130,83 @@ export default {
         this.showChatClass = false;
     },
     send: function(){
-        const socket = new WebSocket('ws://localhost:41200', 'echo-protocol');
         let that = this;
-        // Connection opened
-        socket.addEventListener('open', function(event) {
-            socket.send('handshake...');
+            
+        
+        //this.socket = new WebSocket('ws://localhost:41200', 'echo-protocol')       
+        
+        if(this.socket.readyState === 1){
+            //var profile = this.$auth.getProfile();
+            //var message = `${profile}~${this.owner}~${this.messageToSend}`;
+            //console.log(message);
+             if(this.messageToSend != "" && this.owner !== this.$auth.getProfile()){
+        var profile = this.$auth.getProfile();
+            var message = `${profile}~${this.owner}~${this.messageToSend}`;            
+            this.socket.send(message);
+            this.serverMessages.push({
+                message: `${profile}: ${this.messageToSend}`,
+                isSent: true
+            });
+            this.messageToSend = "";
+            }
+        }
+        else{
+            let that = this;
+            this.socket = this.socket = new WebSocket('ws://localhost:41200', 'echo-protocol')   
+      this.socket.addEventListener('open', function(event) {                        
+            that.socket.send(`${that.profile}~${that.profile}`);
         });
 
+        this.socket.addEventListener('message', function(event) {     
+            var parts = String(event.data).split('~');     
+            that.owner = parts[0];          
+            that.serverMessages.push({
+                message: `${parts[0]}: ${parts[1]}`,
+                isSent: false
+            });
+            that.hideChatClass = false;
+            that.showChatClass = true;
+            
+        });   
+        if(this.socket.readyState === 1){
+           if(that.messageToSend != "" && that.owner !== that.$auth.getProfile()){
+        var profile = that.$auth.getProfile();
+            var message = `${profile}~${that.owner}~${that.messageToSend}`;            
+            that.socket.send(message);
+            that.serverMessages.push({
+                message: `${profile}: ${that.messageToSend}`,
+                isSent: true
+            });
+            that.messageToSend = "";
+            }
+        }        
+        }
+        
+         
+        
         // Listen for messages
-        socket.addEventListener('message', function(event) {
-            that.serverMessage += 'Message from server ' + event.data + "\n";
-        });
+        
     }
   },
   mounted: function() {    
-     
+      let that = this;
+      this.socket = new WebSocket('ws://localhost:41200', 'echo-protocol')   
+      this.socket.addEventListener('open', function(event) {                        
+            that.socket.send(`${that.profile}~${that.profile}`);
+        });
+
+        this.socket.addEventListener('message', function(event) {              
+            var parts = String(event.data).split('~');     
+            that.owner = parts[0];     
+            that.serverMessages.push({
+                message: `${parts[0]}: ${parts[2]}`,
+                isSent: false
+            });
+            that.hideChatClass = false;
+            that.showChatClass = true;
+            
+            //that.serverMessage += 'Message from server ' + event.data + "\n";
+        });    
       let those = this;
       var path = this.$gc.getBaseUrl("products/full/" + this.$route.params.id);
      this.axios.get(path, { headers: this.$auth.AH() })
@@ -159,6 +226,7 @@ export default {
             });
             those.image = those.images[0];            
             those.condition = data.data.product.condition;
+            those.owner = data.data.product.owner;
           })
           .catch(function(error){
             

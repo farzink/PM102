@@ -81,6 +81,7 @@ export default {
             
             if(data.data.isSuccessfull == true) {                          
               gooz.$auth.createToken(data.data.token);
+              gooz.$auth.createProfile(data.data.email);
               gooz.$toasted.show('successful login');              
               gooz.$router.push("/");
             }

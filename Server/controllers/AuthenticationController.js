@@ -13,7 +13,7 @@ module.exports = app => {
         if (req.body.email && req.body.password) {
             const email = req.body.email;
             const password = req.body.password;
-            console.log("request arrived")
+            //console.log("request arrived")
             Profiles.findOne({ where: { email: email } })
                 .then(profile => {
                     if (Profiles.isPassword(profile.password, password)) {
@@ -21,7 +21,8 @@ module.exports = app => {
                         var token = jwt.encode({ id: content.id }, cfg.jwtSecret);
                         res.json({
                             token: token,
-                            isSuccessfull: true
+                            isSuccessfull: true,
+                            email: email
                         });
                         // {
                         //     id: content.id,

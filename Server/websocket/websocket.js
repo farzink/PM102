@@ -6,18 +6,18 @@ var http = require('http');
 
 
 module.exports = app => {
-    var clients = [];
+    var clients = Array();
 
-    var interval = setInterval(function() {
-        clients.forEach(function(client) {
-            if (client.isAlive === false)
-                clients.pop(client);
-            else {
-                client.connection.sendUTF("daily news...");
-            }
-        });
+    // var interval = setInterval(function() {
+    //     clients.forEach(function(client) {
+    //         if (client.isAlive === false)
+    //             clients.pop(client);
+    //         else {
+    //             //client.connection.sendUTF("daily news...");
+    //         }
+    //     });
 
-    }, 5000);
+    // }, 2000);
     var server = http.createServer(function(request, response) {
         console.log((new Date()) + ' Received request for ' + request.url);
         response.writeHead(404);
@@ -52,13 +52,14 @@ module.exports = app => {
         }
 
         var connection = request.accept('echo-protocol', request.origin);
-        clients.push({ origin: connection.origin, connection: connection });
-        console.log("---------------------------" + wsServer.clients)
-        console.log((new Date()) + ' Connection accepted.');
+        //clients.push({ origin: connection.origin, connection: connection });
+        //console.log("---------------------------" + wsServer.clients)
+        //console.log((new Date()) + ' Connection accepted.');
         connection.on('message', function(message) {
             if (message.type === 'utf8') {
                 console.log('Received Message: ' + message.utf8Data);
-                connection.sendUTF(message.utf8Data);
+                checkAsNewClient(connection, message)
+                    //connection.sendUTF(message.utf8Data);
             }
             // else if (message.type === 'binary') {
             //     console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
@@ -69,4 +70,67 @@ module.exports = app => {
             console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
         });
     });
-};
+
+    function checkAsNewClient(con, message) {
+        console.log(message);
+        var client = null;
+        var sender, receiver, m = "";
+        var parts = String(message.utf8Data).split('~');
+        if (parts.length > 0)
+            sender = parts[0];
+        if (parts.length > 1)
+            receiver = parts[1];
+        if (parts.length > 2)
+            m = parts[2];
+
+
+        console.log(sender, receiver, m)
+        if (clients.length === 0) {
+            clients.push({
+                user: sender,
+                connection: con
+            });
+            client = clients[0];
+        } else {
+            var c = clients.find(e => e.user == sender)
+            if (c != null) {
+                var index = clients.indexOf(c);
+                clients.splice(index, 1);
+            }
+            // clients.forEach(function(ec) {
+            //     if (ec.user == sender) {
+            //         client = ec;
+            //         //break;
+            //     }
+            // });
+            // if (client != null) {
+            //     clients.pop(client);
+            clients.push({
+                user: sender,
+                connection: con
+            });
+        }
+
+
+
+
+
+
+        console.log("-------------------length is: ", clients.length)
+        clients.forEach(function(e) {
+            console.log(e.user)
+        });
+        client = null;
+        clients.forEach(function(ec) {
+            if (ec.user == receiver) {
+                client = ec;
+                //break;
+            }
+        });
+
+        if (client != null && m != "") {
+            client.connection.sendUTF(`${sender}~${receiver}~${m}`)
+            console.log("----------------------")
+        }
+    }
+}

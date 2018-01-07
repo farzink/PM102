@@ -9,6 +9,12 @@ const auth = {
     createToken: (token) => {
         localStorage.setItem("authToken", token);
     },
+    createProfile: profile => {
+        localStorage.setItem("profile", profile);
+    },
+    getProfile: () => {
+        return localStorage.getItem('profile')
+    },
     isTokenExpired: () => {
         const token = localStorage.getItem('authToken');
     },

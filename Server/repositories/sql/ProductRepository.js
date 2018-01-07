@@ -413,11 +413,9 @@ module.exports = app => {
 
             Products.findOne({
                 where: { id: model.id },
-                include: [{
-                    model: Categories,
-                    model: Profiles
-                }]
+                include: [Categories, Profiles]
             }).then(product => {
+
                 Products.update({
                     nov: Sequelize.literal('nov + 1')
                 }, {
