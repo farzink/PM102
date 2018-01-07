@@ -14,6 +14,7 @@ import Products from '@/components/Products'
 import Profile from '@/components/Profile'
 import Search from '@/components/Search'
 import ProductDetail from '@/components/ProductDetail'
+import ContactUs from '@/components/ContactUs'
 
 Vue.use(Router)
 
@@ -106,6 +107,11 @@ let router = new Router({
             path: '/search',
             name: 'Search',
             component: Search
+        },
+        {
+            path: '/contactUs',
+            name: ' ContactUs',
+            component: ContactUs
         }
     ]
 });

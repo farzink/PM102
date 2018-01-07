@@ -18,6 +18,9 @@
       <li class="nav-item" v-if="signedin">
         <router-link class="nav-link" :to="'/manage/products'">Manage Products</router-link>                
       </li>
+       <li class="nav-item" v-if="signedin">
+        <router-link class="nav-link" :to="'/contactUs'">Contact Us</router-link>                
+      </li>
       <li class="nav-item" v-if="signedin">
         <router-link class="nav-link" :to="'/about'">About Us</router-link>                
       </li>
