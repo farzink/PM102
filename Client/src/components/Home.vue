@@ -33,7 +33,32 @@
       </div>
     </header>
 
-
+<section class="showcase">
+      <div class="p-2">
+        <div class="row no-gutters">
+          <div class="col-lg-4 order-lg-2 text-white showcase-img hidemeImg rounded"  style="background-image: url('/static/img/Asset_Map_1.jpg');"></div>
+          <div class="col-lg-8 order-lg-1 my-auto showcase-text text-center hidemeTxt">
+            <h2>Shopping from the Neighbourhood</h2>
+            <p class="lead mb-0">Save money and time if your neighbor have your product to sell!</p>
+          </div>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-lg-4 text-white showcase-img hidemeImg" style="background-image: url('/static/img/sell.jpg');"></div>
+          <div class="col-lg-8 my-auto showcase-text text-center hidemeTxt">
+            <h2>Selling your product(s)</h2>
+            <p class="lead mb-0">look at the Neighbors wish lists from other users, maybe you have a product and you can sell it to them.</p>
+          </div>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-lg-4 order-lg-2 text-white showcase-img hidemeImg" style="background-image: url('/static/img/chat.jpg');"></div>
+          <div class="col-lg-8 order-lg-1 my-auto showcase-text text-center hidemeTxt">
+            <h2>Chat live!</h2>
+            <p class="lead mb-0">Don't need to give your phone number or any other social network account. We provide the communication interface here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
     
     
 
@@ -94,12 +119,15 @@ export default {
           })
   } 
 }
+import "../assets/js/script";
 </script>
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 body {
-  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
 
 h1,
 h2,
@@ -107,67 +135,99 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 700; }
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  
+}
 
 header.masthead {
   position: relative;
-  background-color: #343a40;
+  background-color: #ffffff;
   background: url("/static/img/map.jpg") no-repeat center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   padding-top: 8rem;
-  padding-bottom: 8rem; }
-  header.masthead .overlay {
-    position: absolute;
-    background-color: #212529;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0.3; }
+  padding-bottom: 8rem;
+  opacity: 1;
+  
+}
+header.masthead .overlay {
+  position: absolute;
+  background-color: #212529;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+}
+header.masthead h1 {
+  font-size: 2rem;
+}
+@media (min-width: 768px) {
+  header.masthead {
+    padding-top: 12rem;
+    padding-bottom: 12rem;
+  }
   header.masthead h1 {
-    font-size: 2rem; }
-  @media (min-width: 768px) {
-    header.masthead {
-      padding-top: 12rem;
-      padding-bottom: 12rem; }
-      header.masthead h1 {
-        font-size: 3rem; } }
+    font-size: 3rem;
+  }
+}
+
+.lead {
+  color: #6473ad;
+}
+.showcase {
+  background-color: #fff;
+  opacity: 1;
+}
 
 .showcase .showcase-text {
-  padding: 3rem; }
+  padding: 3rem;
+  color: #0e1b57;
+}
 
 .showcase .showcase-img {
-  min-height: 30rem;
-  background-size: cover; }
+  min-height: 15rem;
+  background-size: cover;
+}
+
 
 @media (min-width: 768px) {
   .showcase .showcase-text {
-    padding: 7rem; } }
+    padding: 7rem;
+  }
+}
 
 .features-icons {
   padding-top: 7rem;
-  padding-bottom: 7rem; }
-  .features-icons .features-icons-item {
-    max-width: 20rem; }
-    .features-icons .features-icons-item .features-icons-icon {
-      height: 7rem; }
-      .features-icons .features-icons-item .features-icons-icon i {
-        font-size: 4.5rem; }
-    .features-icons .features-icons-item:hover .features-icons-icon i {
-      font-size: 5rem; }
+  padding-bottom: 7rem;
+}
+.features-icons .features-icons-item {
+  max-width: 20rem;
+}
+.features-icons .features-icons-item .features-icons-icon {
+  height: 7rem;
+}
+.features-icons .features-icons-item .features-icons-icon i {
+  font-size: 4.5rem;
+}
+.features-icons .features-icons-item:hover .features-icons-icon i {
+  font-size: 5rem;
+}
 
 .testimonials {
   padding-top: 7rem;
-  padding-bottom: 7rem; }
-  .testimonials .testimonial-item {
-    max-width: 18rem; }
-    .testimonials .testimonial-item img {
-      max-width: 12rem;
-      box-shadow: 0px 5px 5px 0px #adb5bd; }
+  padding-bottom: 7rem;
+}
+.testimonials .testimonial-item {
+  max-width: 18rem;
+}
+.testimonials .testimonial-item img {
+  max-width: 12rem;
+  box-shadow: 0px 5px 5px 0px #adb5bd;
+}
 
 .call-to-action {
   position: relative;
@@ -178,18 +238,27 @@ header.masthead {
   -o-background-size: cover;
   background-size: cover;
   padding-top: 7rem;
-  padding-bottom: 7rem; }
-  .call-to-action .overlay {
-    position: absolute;
-    background-color: #212529;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0.3; }
+  padding-bottom: 7rem;
+}
+.call-to-action .overlay {
+  position: absolute;
+  background-color: #212529;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+}
 
-footer.footer {
-  padding-top: 4rem;
-  padding-bottom: 4rem; }
+
+.hidemeTxt
+{
+    opacity:0;
+}
+
+.hidemeImg
+{
+    opacity:0;
+}
 
 </style>
