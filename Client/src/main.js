@@ -28,6 +28,7 @@ import { globals } from 'eslint-config-standard';
 
 import authInspector from '@/plugins/authInspector'
 import globalConfiguration from '@/plugins/globalConfiguration'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 
 
@@ -46,8 +47,15 @@ Vue.use(globalConfiguration)
 Vue.use(VueLazyLoad)
 
 Vue.use(VueTouch, { name: 'v-touch' })
-
-
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: 'AIzaSyCJ_cfHFwLTAYLBqcwnGf-u8WXtHvitueY',
+        //libraries: 'places', // This is required if you use the Autocomplete plugin
+        // OR: libraries: 'places,drawing'
+        // OR: libraries: 'places,drawing,visualization'
+        // (as you require)
+    }
+})
 
 
 Vue.config.productionTip = false

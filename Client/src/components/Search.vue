@@ -32,6 +32,24 @@
       </div>
     </header>
 
+
+<div class="container">
+    <gmap-map   :center="{lat:54.310027, lng:10.131051}"
+  :zoom="7"
+  map-type-id="terrain"
+  style="100%; height: 600px"
+>
+<gmap-marker
+      :key="index"
+      v-for="(m, index) in markers"
+      :position="m.position"
+      :clickable="true"
+      :draggable="true"
+      @click="center=m.position"
+    ></gmap-marker>
+</gmap-map>
+</div>
+
     
     <div class="container">
       <div class="row">
@@ -64,6 +82,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { diff } from 'semver';
 export default {
   name: 'Search',
   data () {
@@ -73,7 +92,8 @@ export default {
         selectedCategory: -1,
         term: "",
         size: 10,
-        start: 0
+        start: 0,
+        markers: []
     }
   },
   validations : {
@@ -113,6 +133,19 @@ export default {
             this.axios.get(url, { headers: this.$auth.AH() })
                 .then(function(data){
                     t.products = data.data.products;
+                    t.markers = [];
+                    console.log(t.products)
+                    t.products.forEach(element => {
+                      if(element.lat != "" && element.lng != ""){
+                        console.log(element)
+                        t.markers.push({
+                          position: {
+                            lat: parseFloat(element.lat),
+                            lng: parseFloat(element.lng)
+                          }
+                        });                      
+                    }
+                    });
           })
           .catch(function(error){
             

@@ -106,7 +106,7 @@ module.exports = app => {
         searchByRadius: (model, coordinate, result) => {
 
 
-
+            console.log("searche started")
 
             Products.findAll((model.cid != -1) ? ({
                         where: {
